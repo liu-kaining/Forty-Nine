@@ -1,0 +1,278 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(245, 240, 230, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 150;
+  padding: 20px;
+}
+
+.panel {
+  background: #faf6ef;
+  border: 1px solid #d4c8b0;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.12);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background: #f5f0e6;
+  border-bottom: 1px solid #d4c8b0;
+  padding: 24px 30px;
+  text-align: center;
+  border-radius: 16px 16px 0 0;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #a09080;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.closeBtn:hover {
+  background: #e8e0d0;
+  color: #6a5a4a;
+}
+
+.title {
+  font-size: 26px;
+  letter-spacing: 10px;
+  color: #4A3F30;
+  margin: 0 0 8px;
+  font-weight: normal;
+}
+
+.symbols {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.trigram {
+  font-size: 32px;
+  color: #4A3F30;
+}
+
+.trigramSeparator {
+  font-size: 24px;
+  color: #a09080;
+}
+
+.content {
+  padding: 24px 30px 40px;
+}
+
+.section {
+  margin-bottom: 28px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: #8B7355;
+  margin: 0 0 14px;
+  font-weight: normal;
+}
+
+.trigramGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.trigramCard {
+  background: #f5f0e6;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.trigramName {
+  font-size: 22px;
+  letter-spacing: 6px;
+  color: #4A3F30;
+  margin-bottom: 10px;
+}
+
+.trigramMeanings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.trigramMeaning {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #6a5a4a;
+  background: #ede6d8;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.yaoList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.yaoItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #f5f0e6;
+  border-radius: 6px;
+}
+
+.yaoItem.changing {
+  background: #f5ede5;
+  border: 1px solid #d4a060;
+}
+
+.yaoPosition {
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #8B7355;
+  width: 40px;
+}
+
+.yaoLine {
+  flex: 1;
+  height: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.yangLine {
+  width: 100%;
+  height: 3px;
+  background: #4A3F30;
+  border-radius: 2px;
+}
+
+.yinLine {
+  width: 100%;
+  height: 3px;
+  background: #4A3F30;
+  border-radius: 2px;
+  position: relative;
+}
+
+.yinLine::before,
+.yinLine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 40%;
+  height: 3px;
+  background: #4A3F30;
+  border-radius: 2px;
+}
+
+.yinLine::before {
+  left: 0;
+}
+
+.yinLine::after {
+  right: 0;
+}
+
+.changeMark {
+  position: absolute;
+  right: -16px;
+  color: #c9a060;
+  font-size: 16px;
+}
+
+.yaoValue {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #6a5a4a;
+  width: 50px;
+}
+
+.yaoType {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #c9a060;
+  width: 24px;
+}
+
+.changedHexagram {
+  background: #f5ede5;
+  border: 1px solid #d4a060;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.changedName {
+  display: block;
+  font-size: 20px;
+  letter-spacing: 6px;
+  color: #8B4513;
+  margin-bottom: 6px;
+}
+
+.changedBinary {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: #a08060;
+}
+
+.hexagramText {
+  font-size: 16px;
+  letter-spacing: 4px;
+  color: #4A3F30;
+  line-height: 1.8;
+  margin: 0;
+  text-align: center;
+}
+
+.interpretation {
+  background: #f5f0e6;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.interpText {
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: #4A3F30;
+  line-height: 1.9;
+  margin: 0 0 12px;
+}
+
+.interpSub {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #a09080;
+  margin: 0;
+  text-align: right;
+}

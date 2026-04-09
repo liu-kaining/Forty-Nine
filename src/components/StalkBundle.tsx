@@ -3,7 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { ChangeResult, AnimationPhase } from '../types';
 import styles from './StalkBundle.module.css';
 
-const ANIM = { duration: 2.4, ease: [0.25, 0.1, 0.25, 1] as const };
+const EASE_SMOOTH = [0.25, 0.1, 0.25, 1] as const;
+
+const PILE_TRANSITION = {
+  type: 'spring' as const,
+  stiffness: 70,
+  damping: 18,
+  mass: 1,
+};
 
 interface StalkBundleProps {
   total: number;
@@ -137,8 +144,7 @@ export default function StalkBundle({
       <div className={styles.container}>
         <motion.div
           className={styles.pile}
-          layout
-          transition={{ duration: ANIM.duration, ease: ANIM.ease }}
+          transition={PILE_TRANSITION}
         >
           {computed.allStalks.map(s => (
             <Stalk key={s.id} data={s} />
@@ -156,7 +162,7 @@ export default function StalkBundle({
           className={styles.pileWrapper}
           initial={{ x: 0 }}
           animate={{ x: '-10vw' }}
-          transition={{ duration: ANIM.duration, ease: ANIM.ease }}
+          transition={PILE_TRANSITION}
         >
           {/* 揲四计数标签 */}
           {phase === 'COUNT_LEFT' && leftGroupsRemoved > 0 && (
@@ -172,11 +178,9 @@ export default function StalkBundle({
             </motion.div>
           )}
           <div className={styles.pile}>
-            <AnimatePresence mode="popLayout">
-              {leftVisible.map(s => (
-                <Stalk key={s.id} data={s} />
-              ))}
-            </AnimatePresence>
+            {leftVisible.map(s => (
+              <Stalk key={s.id} data={s} />
+            ))}
           </div>
           {/* 飘走的一组 */}
           <AnimatePresence>
@@ -186,7 +190,7 @@ export default function StalkBundle({
                 className={styles.flyingGroup}
                 initial={{ opacity: 1, y: 0, x: 0 }}
                 animate={{ opacity: 0, y: -80, x: -40 }}
-                transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+                transition={{ duration: 6, ease: [0.4, 0, 0.2, 1] }}
               >
                 {leftCurrentGroup.map(s => (
                   <div key={s.id} className={styles.stalk} style={{ height: '40px' }} />
@@ -203,7 +207,7 @@ export default function StalkBundle({
               className={styles.hungArea}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: -30 }}
-              transition={{ duration: ANIM.duration, ease: ANIM.ease }}
+              transition={{ duration: 2.2, ease: EASE_SMOOTH }}
             >
               <div className={styles.stalk} style={{ height: '35vh', minHeight: '140px', maxHeight: '280px' }} />
               <span className={styles.hungLabel}>挂一</span>
@@ -216,7 +220,7 @@ export default function StalkBundle({
           className={styles.pileWrapper}
           initial={{ x: 0 }}
           animate={{ x: '10vw' }}
-          transition={{ duration: ANIM.duration, ease: ANIM.ease }}
+          transition={PILE_TRANSITION}
         >
           {phase === 'COUNT_RIGHT' && rightGroupsRemoved > 0 && (
             <motion.div
@@ -231,11 +235,9 @@ export default function StalkBundle({
             </motion.div>
           )}
           <div className={styles.pile}>
-            <AnimatePresence mode="popLayout">
-              {rightVisible.map(s => (
-                <Stalk key={s.id} data={s} />
-              ))}
-            </AnimatePresence>
+            {rightVisible.map(s => (
+              <Stalk key={s.id} data={s} />
+            ))}
           </div>
           <AnimatePresence>
             {rightCurrentGroup.length > 0 && (
@@ -244,7 +246,7 @@ export default function StalkBundle({
                 className={styles.flyingGroup}
                 initial={{ opacity: 1, y: 0, x: 0 }}
                 animate={{ opacity: 0, y: -80, x: 40 }}
-                transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+                transition={{ duration: 6, ease: [0.4, 0, 0.2, 1] }}
               >
                 {rightCurrentGroup.map(s => (
                   <div key={s.id} className={styles.stalk} style={{ height: '40px' }} />
@@ -263,7 +265,7 @@ export default function StalkBundle({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 0.7, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 2.0, ease: 'easeInOut' }}
+            transition={{ duration: 10, ease: 'easeInOut' }}
           >
             <span className={styles.gatherText}>
               归余 {changeResult ? changeResult.removed : 0} 根
@@ -278,7 +280,7 @@ export default function StalkBundle({
             className={styles.remainText}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.5, delay: 0.5 }}
+            transition={{ duration: 8, delay: 0.5 }}
           >
             余 {changeResult.nextTotal} 根
           </motion.div>
@@ -289,17 +291,13 @@ export default function StalkBundle({
 }
 
 function Stalk({ data }: { data: StalkData }) {
+  // 性能关键：每根蓍草不做 layout/逐根动画，避免大量重排导致掉帧
   return (
-    <motion.div
+    <div
       className={styles.stalk}
       style={{
-        transform: `translateX(${data.offsetX}px) translateY(${data.offsetY}px) rotate(${data.rotation}deg)`,
+        transform: `translate3d(${data.offsetX}px, ${data.offsetY}px, 0) rotate(${data.rotation}deg)`,
       }}
-      initial={{ opacity: 0, scaleY: 0.5 }}
-      animate={{ opacity: 1, scaleY: 1 }}
-      exit={{ opacity: 0, y: -40, scale: 0.7 }}
-      transition={{ duration: 0.8, ease: 'easeInOut' }}
-      layout
     />
   );
 }

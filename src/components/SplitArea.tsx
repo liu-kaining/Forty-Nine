@@ -78,7 +78,7 @@ export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 3, delay: 0.3 }}
           >
             <motion.span
               className={styles.handIcon}
@@ -111,7 +111,7 @@ export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
           style={{ left: cursorX }}
           initial={{ opacity: 0, scaleY: 0.3 }}
           animate={{ opacity: 1, scaleY: 1 }}
-          transition={{ duration: 0.15 }}
+          transition={{ duration: 0.8 }}
         />
       )}
     </div>

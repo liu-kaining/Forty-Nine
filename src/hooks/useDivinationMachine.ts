@@ -1,16 +1,19 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { DivinationState, AnimationPhase } from '../types';
 import { performChange, yaoFromTotal } from '../engine/divination';
 
+const STORAGE_KEY = 'divination_state';
+
 /** 每个动画阶段的停留时长（ms）——从容、舒缓 */
 const PHASE_TIMING: Record<string, number> = {
-  SPLIT:       3000,
-  HANG_ONE:    2800,
+  // 节奏折中：不至于“卡住”，也不至于“太快来不及看”
+  SPLIT:       5200,
+  HANG_ONE:    3400,
   COUNT_LEFT:  2000,
   COUNT_RIGHT: 2000,
-  GATHER:      3500,
-  REGROUP:     3200,
-  PAUSE:       2500,
+  GATHER:      3000,
+  REGROUP:     2400,
+  PAUSE:       1400,
 };
 
 const initialState: DivinationState = {
@@ -28,15 +31,66 @@ const initialState: DivinationState = {
 };
 
 export function useDivinationMachine() {
-  const [state, setState] = useState<DivinationState>(initialState);
+  const [state, setState] = useState<DivinationState>(() => {
+    if (typeof window === 'undefined') return initialState;
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // 有保存的状态且不是 PREPARE 或 HEXAGRAM_COMPLETE，才算恢复
+        if (parsed.machineState && parsed.machineState !== 'PREPARE' && parsed.machineState !== 'HEXAGRAM_COMPLETE') {
+          return { ...initialState, ...parsed, machineState: 'RECOVERING' };
+        }
+      }
+    } catch {}
+    return initialState;
+  });
+  const [isResuming, setIsResuming] = useState(false);
   const animatingRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 持久化状态到 localStorage
+  useEffect(() => {
+    if (state.machineState === 'PREPARE' || state.machineState === 'HEXAGRAM_COMPLETE') {
+      localStorage.removeItem(STORAGE_KEY);
+    } else {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+  }, [state]);
 
   const removeTaiChi = useCallback(() => {
     setState(prev => {
       if (prev.machineState !== 'PREPARE') return prev;
-      return { ...prev, total: 49, machineState: 'AWAITING_SPLIT', changeNumber: 1 };
+      return { ...prev, total: 49, machineState: 'CONFIRMING', changeNumber: 1 };
     });
+  }, []);
+
+  const confirmStart = useCallback(() => {
+    setState(prev => {
+      if (prev.machineState !== 'CONFIRMING') return prev;
+      return { ...prev, machineState: 'CONTEMPLATING' };
+    });
+  }, []);
+
+  const startContemplation = useCallback(() => {
+    setState(prev => {
+      if (prev.machineState !== 'CONTEMPLATING') return prev;
+      return { ...prev, machineState: 'AWAITING_SPLIT' };
+    });
+  }, []);
+
+  const resumeFromStorage = useCallback(() => {
+    setIsResuming(true);
+    setState(prev => {
+      if (prev.machineState !== 'RECOVERING') return prev;
+      return { ...prev, machineState: 'AWAITING_SPLIT' };
+    });
+  }, []);
+
+  const discardAndRestart = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY);
+    setIsResuming(false);
+    setState(initialState);
   }, []);
 
   const split = useCallback((ratio: number) => {
@@ -180,8 +234,22 @@ export function useDivinationMachine() {
   const reset = useCallback(() => {
     animatingRef.current = false;
     if (timerRef.current !== null) clearTimeout(timerRef.current);
+    localStorage.removeItem(STORAGE_KEY);
+    setIsResuming(false);
     setState(initialState);
   }, []);
 
-  return { state, removeTaiChi, split, advanceAnimation, runAnimation, reset };
+  return {
+    state,
+    isResuming,
+    removeTaiChi,
+    confirmStart,
+    startContemplation,
+    resumeFromStorage,
+    discardAndRestart,
+    split,
+    advanceAnimation,
+    runAnimation,
+    reset,
+  };
 }

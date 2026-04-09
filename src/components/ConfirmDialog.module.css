@@ -1,0 +1,111 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(245, 240, 230, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.card {
+  background: #faf6ef;
+  border: 1px solid #d4c8b0;
+  border-radius: 12px;
+  padding: 40px 50px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+  font-size: 22px;
+  letter-spacing: 12px;
+  color: #4A3F30;
+  margin: 0 0 30px;
+  font-weight: normal;
+}
+
+.principles {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.principle {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.principleTitle {
+  font-size: 18px;
+  letter-spacing: 6px;
+  color: #4A3F30;
+}
+
+.principleDesc {
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: #a09080;
+}
+
+.confirmArea {
+  margin-bottom: 30px;
+}
+
+.hint {
+  font-size: 16px;
+  letter-spacing: 4px;
+  color: #7a6a5a;
+  margin: 0 0 20px;
+}
+
+.swipeHint {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #a09080;
+  margin-bottom: 12px;
+}
+
+.swipeArea {
+  padding: 8px;
+}
+
+.swipeTrack {
+  background: #e8e0d0;
+  border-radius: 20px;
+  height: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.swipeThumb {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #c9b890, #a89870);
+  border-radius: 50%;
+  cursor: grab;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.swipeThumb:active {
+  cursor: grabbing;
+}
+
+.cancelBtn {
+  background: none;
+  border: none;
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: #a09080;
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.cancelBtn:hover {
+  color: #7a6a5a;
+}

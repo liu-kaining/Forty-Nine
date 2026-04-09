@@ -1,0 +1,223 @@
+.container {
+  position: fixed;
+  inset: 0;
+  background: #f5f0e6;
+  overflow: hidden;
+  z-index: 200;
+}
+
+.topBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding: 18px 18px 10px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 240, 230, 0.96) 0%,
+    rgba(245, 240, 230, 0.85) 60%,
+    rgba(245, 240, 230, 0) 100%
+  );
+  backdrop-filter: blur(6px);
+}
+
+.topTitle {
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 10px;
+  color: #4A3F30;
+}
+
+.topSub {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: #a09080;
+}
+
+.intro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.introTitle {
+  font-size: 48px;
+  letter-spacing: 24px;
+  color: #4A3F30;
+  margin: 0;
+  font-weight: normal;
+}
+
+.introSubtitle {
+  font-size: 22px;
+  letter-spacing: 12px;
+  color: #8B7355;
+  margin-top: 16px;
+}
+
+.gallery {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 74px 18px 120px;
+}
+
+.matrixWrap {
+  width: 100%;
+  overflow-x: auto;
+  padding-top: 60px;
+}
+
+.matrixGrid {
+  display: grid;
+  grid-template-columns: 92px repeat(8, minmax(120px, 1fr));
+  gap: 10px;
+  min-width: 1100px;
+  padding: 0 6px;
+}
+
+.cornerCell {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: transparent;
+  z-index: 3;
+}
+
+.headerCell {
+  position: sticky;
+  top: 0;
+  background: rgba(245, 240, 230, 0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(212, 200, 176, 0.7);
+  border-radius: 10px;
+  padding: 10px 8px 8px;
+  text-align: center;
+  z-index: 2;
+}
+
+.rowGroup {
+  display: contents;
+}
+
+.rowHeaderCell {
+  position: sticky;
+  left: 0;
+  background: rgba(245, 240, 230, 0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(212, 200, 176, 0.7);
+  border-radius: 10px;
+  padding: 10px 8px 8px;
+  text-align: center;
+  z-index: 1;
+}
+
+.headerSymbol {
+  font-size: 26px;
+  color: #4A3F30;
+  line-height: 1.1;
+}
+
+.headerName {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: #6a5a4a;
+  margin-top: 6px;
+}
+
+.headerHint {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #b0a090;
+  margin-top: 6px;
+}
+
+.hexagramCell {
+  background: #faf6ef;
+  border: 1px solid #d4c8b0;
+  border-radius: 10px;
+  padding: 12px 10px 10px;
+  text-align: center;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.hexagramCell:hover {
+  border-color: #a09080;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.cellSymbols {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.cellTrigram {
+  font-size: 24px;
+  color: #4A3F30;
+  line-height: 1.1;
+}
+
+.hexagramName {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #6a5a4a;
+}
+
+.startDock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 16px 18px 22px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(
+    to top,
+    rgba(245, 240, 230, 0.98) 0%,
+    rgba(245, 240, 230, 0.9) 55%,
+    rgba(245, 240, 230, 0) 100%
+  );
+  backdrop-filter: blur(6px);
+}
+
+.startButton {
+  appearance: none;
+  border: 1px solid #c0b090;
+  background: rgba(250, 246, 239, 0.95);
+  color: #4A3F30;
+  font-family: inherit;
+  font-size: 16px;
+  letter-spacing: 8px;
+  padding: 14px 34px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.startButton:hover {
+  border-color: #a09080;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.startButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}

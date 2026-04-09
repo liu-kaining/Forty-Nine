@@ -117,7 +117,7 @@
 
 .footer {
   flex-shrink: 0;
-  padding: 20px;
+  padding: 26px 20px 30px;
   display: flex;
   justify-content: center;
 }
@@ -137,4 +137,102 @@
   background: rgba(139, 115, 85, 0.2);
   transition: width 3s ease-in-out;
   border-radius: 1px;
+}
+
+.confirmArea {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.recoverArea {
+  position: fixed;
+  inset: 0;
+  background: rgba(245, 240, 230, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.recoverCard {
+  background: #faf6ef;
+  border: 1px solid #d4c8b0;
+  border-radius: 12px;
+  padding: 50px 60px;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+.recoverTitle {
+  font-size: 20px;
+  letter-spacing: 8px;
+  color: #4A3F30;
+  margin: 0 0 16px;
+  font-weight: normal;
+}
+
+.recoverSubtitle {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: #a09080;
+  margin: 0 0 40px;
+}
+
+.recoverActions {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.resumeBtn,
+.restartBtn {
+  padding: 12px 36px;
+  font-size: 15px;
+  letter-spacing: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.resumeBtn {
+  background: #6B5438;
+  border: 1px solid #6B5438;
+  color: #faf6ef;
+}
+
+.resumeBtn:hover {
+  background: #5a4530;
+}
+
+.restartBtn {
+  background: transparent;
+  border: 1px solid #c0b090;
+  color: #8B7355;
+}
+
+.restartBtn:hover {
+  border-color: #a09070;
+  color: #6B5438;
+}
+
+.detailBtn {
+  margin-top: 20px;
+  padding: 12px 32px;
+  background: transparent;
+  border: 1px solid #c0b090;
+  color: #8B7355;
+  font-size: 14px;
+  letter-spacing: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.detailBtn:hover {
+  border-color: #a09070;
+  color: #6B5438;
+  background: #f5f0e6;
 }
