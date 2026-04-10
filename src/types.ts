@@ -21,9 +21,12 @@ export interface ChangeResult {
 
 export type MachineState =
   | 'PREPARE'
+  | 'CONFIRMING'
+  | 'CONTEMPLATING'
   | 'AWAITING_SPLIT'
   | 'ANIMATING'
   | 'CHANGE_COMPLETE'
+  | 'RECOVERING'
   | 'HEXAGRAM_COMPLETE';
 
 export type AnimationPhase =

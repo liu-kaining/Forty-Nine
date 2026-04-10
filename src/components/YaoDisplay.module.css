@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 
 .container.large {
@@ -12,20 +12,20 @@
 .yaoRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .label {
   width: 20px;
   text-align: right;
-  font-size: 14px;
+  font-size: 18px;
   color: #999;
   letter-spacing: 1px;
 }
 
 .valueLabel {
-  width: 40px;
-  font-size: 12px;
+  width: 52px;
+  font-size: 16px;
   color: #aaa;
   letter-spacing: 1px;
 }
@@ -35,7 +35,7 @@
 }
 
 .yaoLine {
-  width: 120px;
+  width: 160px;
 }
 
 .large .yaoLine {
@@ -51,7 +51,7 @@
 
 .yangLine {
   width: 100%;
-  height: 4px;
+  height: 5px;
   background: #333;
   border-radius: 1px;
 }
@@ -70,7 +70,7 @@
 .yinLeft,
 .yinRight {
   flex: 1;
-  height: 4px;
+  height: 5px;
   background: #333;
   border-radius: 1px;
 }
@@ -81,7 +81,7 @@
 }
 
 .yinGap {
-  width: 20px;
+  width: 24px;
 }
 
 .large .yinGap {
@@ -91,10 +91,10 @@
 /* 变爻标记 */
 .changeMark {
   position: absolute;
-  right: -24px;
+  right: -28px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 14px;
+  font-size: 16px;
   color: #8B4513;
   line-height: 1;
 }

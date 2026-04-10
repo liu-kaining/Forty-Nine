@@ -1,4 +1,5 @@
 import type { ChangeResult, YaoValue, YaoInfo, YaoType, HexagramInfo } from '../types';
+import { HEXAGRAM_TABLE, TRIGRAM_NAMES, TRIGRAM_MEANINGS, HEXAGRAM_TEXTS } from './hexagrams';
 
 /**
  * 执行"一变"的推演逻辑
@@ -50,48 +51,6 @@ export function yaoFromTotal(total: number): YaoInfo {
   return { value, ...map[value] };
 }
 
-// 八卦基础符号
-const TRIGRAM_NAMES: Record<string, string> = {
-  '111': '乾', '000': '坤', '100': '震', '010': '坎',
-  '001': '艮', '011': '巽', '101': '离', '110': '兑',
-};
-
-// 64卦表：上卦(外卦) + 下卦(内卦) → 卦名
-const HEXAGRAM_TABLE: Record<string, string> = {
-  '111111': '乾为天', '000000': '坤为地',
-  '100010': '水雷屯', '010001': '山水蒙',
-  '111010': '水天需', '010111': '天水讼',
-  '010000': '地水师', '000010': '水地比',
-  '111011': '风天小畜', '110111': '天泽履',
-  '111000': '地天泰', '000111': '天地否',
-  '101111': '天火同人', '111101': '火天大有',
-  '001000': '地山谦', '000100': '雷地豫',
-  '100110': '泽雷随', '011001': '山风蛊',
-  '110000': '地泽临', '000011': '风地观',
-  '100101': '火雷噬嗑', '101001': '山火贲',
-  '000001': '山地剥', '100000': '地雷复',
-  '100111': '天雷无妄', '111100': '山天大畜',
-  '100001': '山雷颐', '011110': '泽风大过',
-  '010010': '坎为水', '101101': '离为火',
-  '001110': '泽山咸', '011100': '雷风恒',
-  '001111': '天山遯', '111001': '雷天大壮',
-  '000101': '火地晋', '101000': '地火明夷',
-  '101011': '风火家人', '110101': '火泽睽',
-  '001010': '水山蹇', '010100': '雷水解',
-  '110001': '山泽损', '100011': '风雷益',
-  '111110': '泽天夬', '011111': '天风姤',
-  '000110': '泽地萃', '011000': '地风升',
-  '010110': '泽水困', '011010': '水风井',
-  '101110': '泽火革', '011101': '火风鼎',
-  '100100': '震为雷', '001001': '艮为山',
-  '001011': '风山渐', '110100': '雷泽归妹',
-  '101100': '雷火丰', '001101': '火山旅',
-  '011011': '巽为风', '110110': '兑为泽',
-  '010011': '风水涣', '110010': '水泽节',
-  '110011': '风泽中孚', '001100': '雷山小过',
-  '101010': '水火既济', '010101': '火水未济',
-};
-
 /**
  * 将6个爻转为二进制字符串（初爻在前）
  * 阳=1, 阴=0
@@ -115,6 +74,7 @@ function getChangedBinary(yaos: YaoInfo[]): string | null {
 export function getHexagramInfo(yaos: YaoInfo[]): {
   original: HexagramInfo;
   changed: HexagramInfo | null;
+  details: HexagramDetails;
 } {
   const binary = yaosToBinary(yaos);
   const originalName = HEXAGRAM_TABLE[binary] || '未知卦';
@@ -136,8 +96,72 @@ export function getHexagramInfo(yaos: YaoInfo[]): {
     };
   }
 
+  const changedHexagramDetails: HexagramDetails['changedHexagram'] = changedBinary && changed
+    ? {
+      name: changed.name,
+      binary: changedBinary,
+      upperTrigram: changedBinary.slice(3, 6),
+      lowerTrigram: changedBinary.slice(0, 3),
+    }
+    : null;
+
+  // 构建详细卦象信息
+  const details: HexagramDetails = {
+    name: originalName,
+    binary,
+    upperTrigram,
+    lowerTrigram,
+    upperName: TRIGRAM_NAMES[upperTrigram] || '?',
+    lowerName: TRIGRAM_NAMES[lowerTrigram] || '?',
+    upperSymbol: TRIGRAM_NAMES[upperTrigram] || '?',
+    lowerSymbol: TRIGRAM_NAMES[lowerTrigram] || '?',
+    upperMeanings: TRIGRAM_MEANINGS[upperTrigram] || [],
+    lowerMeanings: TRIGRAM_MEANINGS[lowerTrigram] || [],
+    yaos: yaos.map((y, i) => ({
+      position: i,
+      positionName: ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'][i],
+      value: y.value,
+      valueName: ['', '少阳', '少阴', '', '老阳', '老阴'][y.value] || '',
+      type: y.type,
+      isYang: y.isYang,
+      isChanging: y.isChanging,
+    })),
+    text: HEXAGRAM_TEXTS[binary] || null,
+    changedHexagram: changedHexagramDetails,
+  };
+
   return {
     original: { name: originalName, symbol: originalSymbol },
     changed,
+    details,
   };
+}
+
+export interface HexagramDetails {
+  name: string;
+  binary: string;
+  upperTrigram: string;
+  lowerTrigram: string;
+  upperName: string;
+  lowerName: string;
+  upperSymbol: string;
+  lowerSymbol: string;
+  upperMeanings: string[];
+  lowerMeanings: string[];
+  yaos: Array<{
+    position: number;
+    positionName: string;
+    value: YaoValue;
+    valueName: string;
+    type: YaoType;
+    isYang: boolean;
+    isChanging: boolean;
+  }>;
+  text: { base: string; changed: string } | null;
+  changedHexagram: {
+    name: string;
+    binary: string;
+    upperTrigram: string;
+    lowerTrigram: string;
+  } | null;
 }
