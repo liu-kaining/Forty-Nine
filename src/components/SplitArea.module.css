@@ -65,3 +65,38 @@
   pointer-events: none;
   border-radius: 1px;
 }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .hint {
+    gap: 8px;
+  }
+
+  .handIcon {
+    font-size: 28px;
+  }
+
+  .hintText {
+    font-size: 13px;
+    letter-spacing: 3px;
+  }
+
+  .splitLine {
+    width: 1px;
+  }
+
+  .trailDot {
+    width: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .handIcon {
+    font-size: 24px;
+  }
+
+  .hintText {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+}

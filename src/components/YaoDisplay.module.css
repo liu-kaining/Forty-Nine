@@ -103,3 +103,84 @@
   right: -28px;
   font-size: 16px;
 }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .container {
+    gap: 4px;
+  }
+
+  .container.large {
+    gap: 8px;
+  }
+
+  .yaoRow {
+    gap: 8px;
+  }
+
+  .label {
+    width: 16px;
+    font-size: 12px;
+  }
+
+  .valueLabel {
+    width: 32px;
+    font-size: 10px;
+  }
+
+  .yaoLine {
+    width: 80px;
+  }
+
+  .large .yaoLine {
+    width: 120px;
+  }
+
+  .yangLine,
+  .yinLeft,
+  .yinRight {
+    height: 3px;
+  }
+
+  .large .yangLine,
+  .large .yinLeft,
+  .large .yinRight {
+    height: 4px;
+  }
+
+  .yinGap {
+    width: 16px;
+  }
+
+  .large .yinGap {
+    width: 20px;
+  }
+
+  .changeMark {
+    right: -18px;
+    font-size: 12px;
+  }
+
+  .large .changeMark {
+    right: -22px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .yaoLine {
+    width: 70px;
+  }
+
+  .large .yaoLine {
+    width: 100px;
+  }
+
+  .label {
+    font-size: 11px;
+  }
+
+  .valueLabel {
+    font-size: 9px;
+  }
+}

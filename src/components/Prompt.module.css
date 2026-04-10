@@ -16,3 +16,40 @@
   color: #a09080;
   margin-top: 12px;
 }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 16px;
+  }
+
+  .mainText {
+    font-size: 16px;
+    letter-spacing: 6px;
+    line-height: 1.8;
+  }
+
+  .subText {
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px 12px;
+  }
+
+  .mainText {
+    font-size: 14px;
+    letter-spacing: 4px;
+    line-height: 1.6;
+  }
+
+  .subText {
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 8px;
+  }
+}

@@ -114,3 +114,87 @@
   letter-spacing: 5px;
   text-shadow: 0 0 15px rgba(92, 74, 50, 0.1);
 }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .container {
+    min-height: 45vh;
+  }
+
+  .pile {
+    gap: 3px;
+    min-height: 150px;
+  }
+
+  .splitView {
+    gap: 12vw;
+  }
+
+  .stalk {
+    width: 4px;
+    height: 35vh;
+    min-height: 140px;
+    max-height: 300px;
+  }
+
+  .hungArea {
+    top: -6vh;
+  }
+
+  .hungLabel {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .countLabel {
+    top: -30px;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .flyingGroup {
+    gap: 3px;
+    padding: 3px 4px;
+  }
+
+  .gatherArea {
+    margin-top: 24px;
+  }
+
+  .gatherText {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+
+  .remainText {
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    min-height: 40vh;
+  }
+
+  .stalk {
+    height: 30vh;
+    min-height: 120px;
+    max-height: 250px;
+  }
+
+  .countLabel {
+    font-size: 14px;
+  }
+
+  .gatherText {
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  .remainText {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+}

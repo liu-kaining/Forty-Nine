@@ -138,3 +138,78 @@
   transition: width 3s ease-in-out;
   border-radius: 1px;
 }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .header {
+    padding: 3vh 16px 2vh;
+  }
+
+  .stalkArea {
+    width: 95%;
+    min-height: 50vh;
+  }
+
+  .taichiStalk {
+    right: 20px;
+  }
+
+  .singleStalk {
+    width: 4px;
+    height: 20vh;
+    min-height: 80px;
+    max-height: 200px;
+  }
+
+  .taichiLabel {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .hexagramArea {
+    gap: 24px;
+  }
+
+  .hexagramName {
+    font-size: 24px;
+    letter-spacing: 8px;
+  }
+
+  .changedName {
+    font-size: 16px;
+    letter-spacing: 4px;
+    margin-top: 8px;
+  }
+
+  .resetBtn {
+    margin-top: 20px;
+    padding: 12px 32px;
+    font-size: 14px;
+    letter-spacing: 4px;
+  }
+
+  .footer {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 2vh 12px 1.5vh;
+  }
+
+  .hexagramName {
+    font-size: 20px;
+    letter-spacing: 6px;
+  }
+
+  .changedName {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+
+  .resetBtn {
+    padding: 10px 28px;
+    font-size: 13px;
+  }
+}
