@@ -3,18 +3,53 @@ import type { DivinationState, AnimationPhase } from '../types';
 import { performChange, yaoFromTotal } from '../engine/divination';
 
 const STORAGE_KEY = 'divination_state';
+const ANIM_SPEED_STORAGE_KEY = 'divination_anim_speed';
 
-/** 每个动画阶段的停留时长（ms）——从容、舒缓 */
-const PHASE_TIMING: Record<string, number> = {
-  // 偏快节奏：减少“等不住”的体感，仍保留阶段可读性
+export type DivinationAnimSpeed = 'fast' | 'normal' | 'slow';
+
+/**
+ * 三档语义（相对下方 BASE）：
+ * - 慢 = 1.0，即「当前完整节奏」基准
+ * - 中 ≈ 快慢之间
+ * - 快 = 明显压缩，整变更省时间
+ */
+const ANIM_SPEED_FACTOR: Record<DivinationAnimSpeed, number> = {
+  fast: 0.26,
+  normal: 0.52,
+  slow: 1,
+};
+
+function readStoredAnimSpeed(): DivinationAnimSpeed {
+  if (typeof window === 'undefined') return 'slow';
+  try {
+    const v = localStorage.getItem(ANIM_SPEED_STORAGE_KEY);
+    if (v === 'fast' || v === 'normal' || v === 'slow') return v;
+  } catch {
+    /* ignore */
+  }
+  return 'slow';
+}
+
+/**
+ * 各阶段基准停留（ms）——对应「慢」档（×1）。
+ * COUNT_LEFT/RIGHT 在一变中会走很多步，基准略低于 SPLIT/HANG，避免整变过长。
+ */
+const BASE_PHASE_TIMING: Record<string, number> = {
   SPLIT:       950,
   HANG_ONE:    620,
-  COUNT_LEFT:  380,
-  COUNT_RIGHT: 380,
+  COUNT_LEFT:  300,
+  COUNT_RIGHT: 300,
   GATHER:      520,
   REGROUP:     380,
   PAUSE:       220,
 };
+
+function tickDelayMs(phase: string | null, speed: DivinationAnimSpeed): number {
+  const p = phase || 'SPLIT';
+  const base = BASE_PHASE_TIMING[p] ?? 3000;
+  const factor = ANIM_SPEED_FACTOR[speed];
+  return Math.max(32, Math.round(base * factor));
+}
 
 const initialState: DivinationState = {
   machineState: 'PREPARE',
@@ -31,6 +66,23 @@ const initialState: DivinationState = {
 };
 
 export function useDivinationMachine() {
+  const animSpeedRef = useRef<DivinationAnimSpeed>('slow');
+  const [animSpeed, setAnimSpeedState] = useState<DivinationAnimSpeed>(() => {
+    const s = readStoredAnimSpeed();
+    animSpeedRef.current = s;
+    return s;
+  });
+
+  const setAnimSpeed = useCallback((speed: DivinationAnimSpeed) => {
+    animSpeedRef.current = speed;
+    setAnimSpeedState(speed);
+    try {
+      localStorage.setItem(ANIM_SPEED_STORAGE_KEY, speed);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   const [state, setState] = useState<DivinationState>(() => {
     if (typeof window === 'undefined') return initialState;
     try {
@@ -215,7 +267,7 @@ export function useDivinationMachine() {
         }
 
         const phase = current.animationPhase;
-        const delay = PHASE_TIMING[phase || 'SPLIT'] ?? 3000;
+        const delay = tickDelayMs(phase, animSpeedRef.current);
 
         timerRef.current = setTimeout(() => {
           advanceAnimation();
@@ -239,6 +291,8 @@ export function useDivinationMachine() {
 
   return {
     state,
+    animSpeed,
+    setAnimSpeed,
     isResuming,
     removeTaiChi,
     confirmStart,

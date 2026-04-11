@@ -45,6 +45,56 @@
   padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 8px;
 }
 
+.animSpeedBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.animSpeedLabel {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: #9f9381;
+}
+
+.animSpeedBtns {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.animSpeedBtn {
+  appearance: none;
+  border: 1px solid #d4c8b0;
+  background: rgba(250, 246, 239, 0.75);
+  color: #7a6a5a;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.animSpeedBtn:hover {
+  border-color: #b8a892;
+  color: #5c4a38;
+}
+
+.animSpeedBtnActive {
+  border-color: #8b7355;
+  background: rgba(139, 115, 85, 0.14);
+  color: #4a3f30;
+  font-weight: 500;
+}
+
 .main {
   flex: 1;
   display: flex;
@@ -359,6 +409,16 @@
 @media (max-width: 768px) {
   .header {
     padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 4px;
+  }
+
+  .animSpeedBar {
+    justify-content: center;
+    margin-bottom: 2px;
+  }
+
+  .animSpeedBtn {
+    padding: 5px 10px;
+    font-size: 11px;
   }
 
   .main {

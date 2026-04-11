@@ -176,11 +176,11 @@
   border-radius: 2px;
 }
 
+/* 阴爻：中间留空；父层绝不能铺全宽实色，否则会和阳爻长得一样 */
 .yinLine {
   width: 100%;
   height: 3px;
-  background: #4A3F30;
-  border-radius: 2px;
+  background: transparent;
   position: relative;
 }
 
@@ -188,8 +188,9 @@
 .yinLine::after {
   content: '';
   position: absolute;
-  top: 0;
-  width: 40%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42%;
   height: 3px;
   background: #4A3F30;
   border-radius: 2px;

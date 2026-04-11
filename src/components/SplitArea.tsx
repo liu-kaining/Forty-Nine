@@ -9,10 +9,11 @@ interface SplitAreaProps {
 
 export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
   const [cursorX, setCursorX] = useState(0);
   const [cursorRatio, setCursorRatio] = useState(0.5);
-  const [startX, setStartX] = useState(0);
   const [trail, setTrail] = useState<number[]>([]);
 
   const getRelativeX = useCallback((clientX: number) => {
@@ -26,11 +27,12 @@ export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
       if (!enabled) return;
+      draggingRef.current = true;
       setIsDragging(true);
       const { x, ratio } = getRelativeX(e.clientX);
       setCursorX(x);
       setCursorRatio(ratio);
-      setStartX(x);
+      startXRef.current = x;
       setTrail([x]);
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
     },
@@ -39,25 +41,30 @@ export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
-      if (!isDragging) return;
+      if (!draggingRef.current) return;
       const { x, ratio } = getRelativeX(e.clientX);
       setCursorX(x);
       setCursorRatio(ratio);
       // 保留轨迹（最近几个点，做扩散效果）
       setTrail(prev => [...prev.slice(-6), x]);
     },
-    [isDragging, getRelativeX]
+    [getRelativeX]
   );
 
-  const handlePointerUp = useCallback(() => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    setTrail([]);
-    // 只有拖动距离够才触发分割
-    if (Math.abs(cursorX - startX) > 20) {
-      onSplit(cursorRatio);
-    }
-  }, [isDragging, cursorRatio, cursorX, startX, onSplit]);
+  /** 抬手时用当前指针位置算 ratio，避免 setState 未刷完用上一次的 cursorRatio */
+  const handlePointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      if (!draggingRef.current) return;
+      draggingRef.current = false;
+      const { x, ratio } = getRelativeX(e.clientX);
+      setIsDragging(false);
+      setTrail([]);
+      if (Math.abs(x - startXRef.current) > 20) {
+        onSplit(ratio);
+      }
+    },
+    [getRelativeX, onSplit]
+  );
 
   if (!enabled) return null;
 

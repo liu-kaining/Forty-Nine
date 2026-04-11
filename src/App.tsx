@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDivinationMachine } from './hooks/useDivinationMachine';
+import { useDivinationMachine, type DivinationAnimSpeed } from './hooks/useDivinationMachine';
 import { getHexagramInfo, yaosAfterChange } from './engine/divination';
 import StalkBundle from './components/StalkBundle';
 import SplitArea from './components/SplitArea';
@@ -19,7 +19,19 @@ const YAO_NAMES = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
 export default function App() {
   const [screen, setScreen] = useState<'HOME' | 'GALLERY' | 'DIVINATION'>('HOME');
   const [showDetail, setShowDetail] = useState(false);
-  const { state, removeTaiChi, confirmStart, startContemplation, resumeFromStorage, discardAndRestart, split, runAnimation, reset } = useDivinationMachine();
+  const {
+    state,
+    animSpeed,
+    setAnimSpeed,
+    removeTaiChi,
+    confirmStart,
+    startContemplation,
+    resumeFromStorage,
+    discardAndRestart,
+    split,
+    runAnimation,
+    reset,
+  } = useDivinationMachine();
   const { machineState, animationPhase, total, currentYao, currentChange, changeNumber, yaoResults, currentChangeResult, splitRatio } = state;
 
   const handleEnterGallery = useCallback(() => {
@@ -140,6 +152,15 @@ export default function App() {
     [hexagramInfo, yaoResults]
   );
 
+  const showAnimSpeed =
+    machineState !== 'CONFIRMING' && machineState !== 'CONTEMPLATING';
+
+  const animSpeedOptions: { id: DivinationAnimSpeed; label: string }[] = [
+    { id: 'fast', label: '快' },
+    { id: 'normal', label: '中' },
+    { id: 'slow', label: '慢' },
+  ];
+
   if (screen === 'HOME') {
     return <HomeIntro onEnterGallery={handleEnterGallery} />;
   }
@@ -162,6 +183,24 @@ export default function App() {
 
       {/* 顶部提示 */}
       <header className={styles.header}>
+        {showAnimSpeed && (
+          <div className={styles.animSpeedBar} role="group" aria-label="揲蓍动画节奏">
+            <span className={styles.animSpeedLabel}>节奏</span>
+            <div className={styles.animSpeedBtns}>
+              {animSpeedOptions.map(({ id, label }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`${styles.animSpeedBtn} ${animSpeed === id ? styles.animSpeedBtnActive : ''}`}
+                  aria-pressed={animSpeed === id}
+                  onClick={() => setAnimSpeed(id)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <Prompt text={prompt.text} subText={prompt.subText} />
       </header>
 
