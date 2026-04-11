@@ -16,6 +16,44 @@ import styles from './App.module.css';
 const CHANGE_NAMES = ['第一变', '第二变', '第三变'];
 const YAO_NAMES = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
 
+const ANIM_SPEED_OPTIONS: { id: DivinationAnimSpeed; label: string }[] = [
+  { id: 'fast', label: '快' },
+  { id: 'normal', label: '中' },
+  { id: 'slow', label: '慢' },
+];
+
+function AnimSpeedPickers({
+  animSpeed,
+  setAnimSpeed,
+  variant,
+}: {
+  animSpeed: DivinationAnimSpeed;
+  setAnimSpeed: (s: DivinationAnimSpeed) => void;
+  variant: 'header' | 'dock';
+}) {
+  const barClass = variant === 'header' ? styles.animSpeedBar : styles.animSpeedDockBar;
+  return (
+    <div className={barClass} role="group" aria-label="揲蓍动画节奏">
+      <span className={variant === 'dock' ? styles.animSpeedLabelDock : styles.animSpeedLabel}>
+        {variant === 'dock' ? '动画节奏' : '节奏'}
+      </span>
+      <div className={styles.animSpeedBtns}>
+        {ANIM_SPEED_OPTIONS.map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            className={`${styles.animSpeedBtn} ${animSpeed === id ? styles.animSpeedBtnActive : ''}`}
+            aria-pressed={animSpeed === id}
+            onClick={() => setAnimSpeed(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [screen, setScreen] = useState<'HOME' | 'GALLERY' | 'DIVINATION'>('HOME');
   const [showDetail, setShowDetail] = useState(false);
@@ -155,11 +193,11 @@ export default function App() {
   const showAnimSpeed =
     machineState !== 'CONFIRMING' && machineState !== 'CONTEMPLATING';
 
-  const animSpeedOptions: { id: DivinationAnimSpeed; label: string }[] = [
-    { id: 'fast', label: '快' },
-    { id: 'normal', label: '中' },
-    { id: 'slow', label: '慢' },
-  ];
+  /** 分堆 / 揲蓍时视线在中间，顶栏「节奏」易被忽略，底部固定一条更显眼 */
+  const animSpeedDock =
+    showAnimSpeed &&
+    (machineState === 'ANIMATING' || machineState === 'AWAITING_SPLIT');
+  const animSpeedInHeader = showAnimSpeed && !animSpeedDock;
 
   if (screen === 'HOME') {
     return <HomeIntro onEnterGallery={handleEnterGallery} />;
@@ -183,26 +221,24 @@ export default function App() {
 
       {/* 顶部提示 */}
       <header className={styles.header}>
-        {showAnimSpeed && (
-          <div className={styles.animSpeedBar} role="group" aria-label="揲蓍动画节奏">
-            <span className={styles.animSpeedLabel}>节奏</span>
-            <div className={styles.animSpeedBtns}>
-              {animSpeedOptions.map(({ id, label }) => (
-                <button
-                  key={id}
-                  type="button"
-                  className={`${styles.animSpeedBtn} ${animSpeed === id ? styles.animSpeedBtnActive : ''}`}
-                  aria-pressed={animSpeed === id}
-                  onClick={() => setAnimSpeed(id)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
+        {animSpeedInHeader && (
+          <AnimSpeedPickers animSpeed={animSpeed} setAnimSpeed={setAnimSpeed} variant="header" />
         )}
         <Prompt text={prompt.text} subText={prompt.subText} />
       </header>
+
+      {animSpeedDock && (
+        <div
+          className={styles.animSpeedDock}
+          style={{
+            bottom: !isHexagramComplete && yaoResults.length > 0
+              ? 'calc(102px + env(safe-area-inset-bottom, 0px))'
+              : 'calc(44px + env(safe-area-inset-bottom, 0px))',
+          }}
+        >
+          <AnimSpeedPickers animSpeed={animSpeed} setAnimSpeed={setAnimSpeed} variant="dock" />
+        </div>
+      )}
 
       {/* 主区域 */}
       <main className={`${styles.main} ${isHexagramComplete ? styles.mainScrollable : ''}`}>

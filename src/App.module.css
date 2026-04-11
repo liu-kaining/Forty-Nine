@@ -48,16 +48,60 @@
 .animSpeedBar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 4px;
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  background: rgba(255, 252, 247, 0.92);
+  border: 1px solid rgba(201, 184, 154, 0.9);
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(74, 63, 48, 0.06);
 }
 
 .animSpeedLabel {
   font-size: 11px;
   letter-spacing: 0.2em;
-  color: #9f9381;
+  color: #6d6357;
+  font-weight: 500;
+}
+
+/* 分堆 / 揲四时：固定在底部，避免只盯着中间蓍草时看不到顶栏 */
+.animSpeedDock {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  pointer-events: none;
+  max-width: calc(100vw - 24px);
+}
+
+.animSpeedDockBar {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(255, 252, 247, 0.98);
+  border: 1px solid #b8a68c;
+  border-radius: 18px;
+  box-shadow:
+    0 10px 36px rgba(74, 63, 48, 0.14),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+.animSpeedLabelDock {
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  color: #5c4f42;
+  font-weight: 500;
+}
+
+.animSpeedDock .animSpeedBtn {
+  padding: 8px 18px;
+  font-size: 14px;
+  min-width: 52px;
 }
 
 .animSpeedBtns {
@@ -412,13 +456,19 @@
   }
 
   .animSpeedBar {
-    justify-content: center;
-    margin-bottom: 2px;
+    margin-bottom: 6px;
+    padding: 6px 10px;
   }
 
   .animSpeedBtn {
-    padding: 5px 10px;
-    font-size: 11px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .animSpeedDock .animSpeedBtn {
+    padding: 7px 14px;
+    font-size: 13px;
+    min-width: 48px;
   }
 
   .main {
