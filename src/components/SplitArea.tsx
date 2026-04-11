@@ -13,7 +13,6 @@ export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
   const startXRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
   const [cursorX, setCursorX] = useState(0);
-  const [cursorRatio, setCursorRatio] = useState(0.5);
   const [trail, setTrail] = useState<number[]>([]);
 
   const getRelativeX = useCallback((clientX: number) => {
@@ -29,9 +28,8 @@ export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
       if (!enabled) return;
       draggingRef.current = true;
       setIsDragging(true);
-      const { x, ratio } = getRelativeX(e.clientX);
+      const { x } = getRelativeX(e.clientX);
       setCursorX(x);
-      setCursorRatio(ratio);
       startXRef.current = x;
       setTrail([x]);
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
@@ -42,9 +40,8 @@ export default function SplitArea({ enabled, onSplit }: SplitAreaProps) {
   const handlePointerMove = useCallback(
     (e: React.PointerEvent) => {
       if (!draggingRef.current) return;
-      const { x, ratio } = getRelativeX(e.clientX);
+      const { x } = getRelativeX(e.clientX);
       setCursorX(x);
-      setCursorRatio(ratio);
       // 保留轨迹（最近几个点，做扩散效果）
       setTrail(prev => [...prev.slice(-6), x]);
     },
