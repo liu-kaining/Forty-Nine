@@ -273,12 +273,18 @@ export default function App() {
                     <YaoDisplay yaos={yaoResults} large />
                   </div>
                   {hexagramInfo.changed && (
-                    <div className={styles.changedBlock}>
-                      <p className={styles.resultKind}>之卦</p>
-                      <h3 className={styles.changedHexTitle}>{hexagramInfo.changed.name}</h3>
-                      <p className={styles.hexagramSymbol}>{hexagramInfo.changed.symbol}</p>
-                      <YaoDisplay yaos={yaosAfterChange(yaoResults)} large />
-                    </div>
+                    <>
+                      <p className={styles.changingYaoNote}>
+                        动爻：
+                        {YAO_NAMES.filter((_, i) => yaoResults[i]?.isChanging).join('、')}
+                      </p>
+                      <div className={styles.changedBlock}>
+                        <p className={styles.resultKind}>之卦</p>
+                        <h3 className={styles.changedHexTitle}>{hexagramInfo.changed.name}</h3>
+                        <p className={styles.hexagramSymbol}>{hexagramInfo.changed.symbol}</p>
+                        <YaoDisplay yaos={yaosAfterChange(yaoResults)} large />
+                      </div>
+                    </>
                   )}
                   <motion.button
                     className={styles.detailBtn}
