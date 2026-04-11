@@ -31,10 +31,19 @@
       body {
         min-height: 100dvh;
       }
+      /* 节奏控件 portal：与 #root 平级、pointer-events:none 不挡蓍草拖拽，子元素再开点击 */
+      #forty-nine-portal {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2147480000;
+        overflow: visible;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
+    <div id="forty-nine-portal" aria-hidden="true"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

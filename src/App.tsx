@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDivinationMachine, type DivinationAnimSpeed } from './hooks/useDivinationMachine';
 import { getHexagramInfo, yaosAfterChange } from './engine/divination';
@@ -25,18 +26,13 @@ const ANIM_SPEED_OPTIONS: { id: DivinationAnimSpeed; label: string }[] = [
 function AnimSpeedPickers({
   animSpeed,
   setAnimSpeed,
-  variant,
 }: {
   animSpeed: DivinationAnimSpeed;
   setAnimSpeed: (s: DivinationAnimSpeed) => void;
-  variant: 'header' | 'dock';
 }) {
-  const barClass = variant === 'header' ? styles.animSpeedBar : styles.animSpeedDockBar;
   return (
-    <div className={barClass} role="group" aria-label="揲蓍动画节奏">
-      <span className={variant === 'dock' ? styles.animSpeedLabelDock : styles.animSpeedLabel}>
-        {variant === 'dock' ? '动画节奏' : '节奏'}
-      </span>
+    <div className={styles.animSpeedDockBar} role="group" aria-label="揲蓍动画节奏">
+      <span className={styles.animSpeedLabelDock}>动画节奏</span>
       <div className={styles.animSpeedBtns}>
         {ANIM_SPEED_OPTIONS.map(({ id, label }) => (
           <button
@@ -193,11 +189,12 @@ export default function App() {
   const showAnimSpeed =
     machineState !== 'CONFIRMING' && machineState !== 'CONTEMPLATING';
 
-  /** 分堆 / 揲蓍时视线在中间，顶栏「节奏」易被忽略，底部固定一条更显眼 */
-  const animSpeedDock =
-    showAnimSpeed &&
-    (machineState === 'ANIMATING' || machineState === 'AWAITING_SPLIT');
-  const animSpeedInHeader = showAnimSpeed && !animSpeedDock;
+  /**
+   * Portal：挂到 #forty-nine-portal（与 #root 平级），避免被 main 盖住。
+   * 详解打开时隐藏；恢复上次占卜弹层 z-index 仅 100，不能再盖一条否则点不了「继续」。
+   */
+  const showAnimSpeedPortal =
+    showAnimSpeed && !showDetail && machineState !== 'RECOVERING';
 
   if (screen === 'HOME') {
     return <HomeIntro onEnterGallery={handleEnterGallery} />;
@@ -221,9 +218,6 @@ export default function App() {
 
       {/* 顶部提示 */}
       <header className={styles.header}>
-        {animSpeedInHeader && (
-          <AnimSpeedPickers animSpeed={animSpeed} setAnimSpeed={setAnimSpeed} variant="header" />
-        )}
         <Prompt text={prompt.text} subText={prompt.subText} />
       </header>
 
@@ -401,19 +395,23 @@ export default function App() {
         </div>
       )}
 
-      {/* 必须在 main/footer 之后：否则同层 fixed 会被后绘制的 main 整块盖住 */}
-      {animSpeedDock && (
-        <div
-          className={styles.animSpeedDock}
-          style={{
-            bottom: !isHexagramComplete && yaoResults.length > 0
-              ? 'calc(102px + env(safe-area-inset-bottom, 0px))'
-              : 'calc(44px + env(safe-area-inset-bottom, 0px))',
-          }}
-        >
-          <AnimSpeedPickers animSpeed={animSpeed} setAnimSpeed={setAnimSpeed} variant="dock" />
-        </div>
-      )}
+      {showAnimSpeedPortal &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className={styles.animSpeedPortalRoot}
+            style={{
+              bottom: isHexagramComplete
+                ? 'calc(120px + env(safe-area-inset-bottom, 0px))'
+                : !isHexagramComplete && yaoResults.length > 0
+                  ? 'calc(102px + env(safe-area-inset-bottom, 0px))'
+                  : 'calc(48px + env(safe-area-inset-bottom, 0px))',
+            }}
+          >
+            <AnimSpeedPickers animSpeed={animSpeed} setAnimSpeed={setAnimSpeed} />
+          </div>,
+          document.getElementById('forty-nine-portal') ?? document.body
+        )}
     </div>
   );
 }

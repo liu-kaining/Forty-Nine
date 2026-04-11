@@ -45,35 +45,15 @@
   padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 8px;
 }
 
-.animSpeedBar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 0 0 8px;
-  padding: 8px 12px;
-  background: rgba(255, 252, 247, 0.92);
-  border: 1px solid rgba(201, 184, 154, 0.9);
-  border-radius: 14px;
-  box-shadow: 0 4px 18px rgba(74, 63, 48, 0.06);
-}
-
-.animSpeedLabel {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: #6d6357;
-  font-weight: 500;
-}
-
-/* 分堆 / 揲四时：固定在底部，避免只盯着中间蓍草时看不到顶栏 */
-.animSpeedDock {
+/* createPortal 到 document.body，脱离 #root 的 overflow / 层叠，保证一定能点到 */
+.animSpeedPortalRoot {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 500;
+  /* 层级由 #forty-nine-portal 统一抬高，此处仅保证在 portal 容器内叠在子内容之上 */
+  z-index: 1;
   pointer-events: none;
-  max-width: calc(100vw - 24px);
+  max-width: calc(100vw - 20px);
 }
 
 .animSpeedDockBar {
@@ -98,7 +78,7 @@
   font-weight: 500;
 }
 
-.animSpeedDock .animSpeedBtn {
+.animSpeedPortalRoot .animSpeedBtn {
   padding: 8px 18px;
   font-size: 14px;
   min-width: 52px;
@@ -455,17 +435,12 @@
     padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 4px;
   }
 
-  .animSpeedBar {
-    margin-bottom: 6px;
-    padding: 6px 10px;
-  }
-
   .animSpeedBtn {
     padding: 6px 12px;
     font-size: 12px;
   }
 
-  .animSpeedDock .animSpeedBtn {
+  .animSpeedPortalRoot .animSpeedBtn {
     padding: 7px 14px;
     font-size: 13px;
     min-width: 48px;

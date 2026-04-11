@@ -76,7 +76,11 @@ export default function HexagramDetail({ details, onClose }: HexagramDetailProps
                     {yao.isYang ? (
                       <div className={styles.yangLine} />
                     ) : (
-                      <div className={styles.yinLine} />
+                      <div className={styles.yinTrack} aria-hidden>
+                        <div className={styles.yinSegment} />
+                        <div className={styles.yinGap} />
+                        <div className={styles.yinSegment} />
+                      </div>
                     )}
                     {yao.isChanging && <span className={styles.changeMark}>*</span>}
                   </div>
@@ -96,7 +100,7 @@ export default function HexagramDetail({ details, onClose }: HexagramDetailProps
               <div className={styles.changedHexagram}>
                 <span className={styles.changedName}>{details.changedHexagram.name}</span>
                 <span className={styles.changedBinary}>
-                  {details.changedHexagram.binary}
+                  {details.changedHexagram.binary.split('').join(' ')}
                 </span>
               </div>
             </section>
@@ -110,18 +114,17 @@ export default function HexagramDetail({ details, onClose }: HexagramDetailProps
             </section>
           )}
 
-          {/* AI Interpretation placeholder */}
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>易象</h3>
             <div className={styles.interpretation}>
               <p className={styles.interpText}>
-                {details.upperName}重而{details.lowerName}随，
-                {details.upperMeanings[0]}
-                {details.lowerMeanings[0]}。
-                {hasChangingYao && '其中有变爻，宜静心观象。'}
+                本卦「{details.name}」，上为「{details.upperName}」，下为「{details.lowerName}」。
+                {hasChangingYao && details.changedHexagram
+                  ? ` 有动爻，之卦为「${details.changedHexagram.name}」。宜以卦辞、爻辞为主，静心体察。`
+                  : ' 静卦无动爻，宜以卦辞与大象为主。'}
               </p>
               <p className={styles.interpSub}>
-                此为AI辅助解读，仅供参考
+                以上为象位提示，非占断结论；未调用外接大模型。
               </p>
             </div>
           </section>
