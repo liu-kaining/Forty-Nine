@@ -109,3 +109,23 @@
 .cancelBtn:hover {
   color: #7a6a5a;
 }
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(12px + env(safe-area-inset-bottom, 0px));
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .card {
+    max-width: 100%;
+    width: 100%;
+    padding: 28px 22px;
+    margin-top: 8vh;
+  }
+
+  .title {
+    letter-spacing: 8px;
+  }
+}

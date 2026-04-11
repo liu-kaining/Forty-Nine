@@ -12,7 +12,7 @@
   left: 0;
   right: 0;
   z-index: 30;
-  padding: 18px 18px 10px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 18px 10px;
   pointer-events: none;
   background: linear-gradient(
     to bottom,
@@ -69,7 +69,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  padding: 74px 18px 120px;
+  padding: 74px 12px calc(120px + env(safe-area-inset-bottom, 0px));
+  -webkit-overflow-scrolling: touch;
 }
 
 .matrixWrap {
@@ -183,7 +184,7 @@
   right: 0;
   bottom: 0;
   z-index: 40;
-  padding: 16px 18px 22px;
+  padding: 16px 18px calc(18px + env(safe-area-inset-bottom, 0px));
   display: flex;
   justify-content: center;
   background: linear-gradient(
@@ -220,4 +221,52 @@
   opacity: 0.6;
   cursor: default;
   transform: none;
+}
+
+@media (max-width: 768px) {
+  .topTitle {
+    font-size: 18px;
+    letter-spacing: 6px;
+  }
+
+  .topSub {
+    font-size: 12px;
+    letter-spacing: 3px;
+  }
+
+  .matrixGrid {
+    min-width: 720px;
+    gap: 6px;
+    grid-template-columns: 64px repeat(8, minmax(76px, 1fr));
+    padding: 0 2px;
+  }
+
+  .headerCell,
+  .rowHeaderCell {
+    padding: 8px 4px 6px;
+  }
+
+  .headerSymbol {
+    font-size: 20px;
+  }
+
+  .hexagramCell {
+    padding: 8px 6px 6px;
+  }
+
+  .cellTrigram {
+    font-size: 18px;
+  }
+
+  .hexagramName {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .startButton {
+    font-size: 15px;
+    letter-spacing: 6px;
+    padding: 12px 28px;
+    width: min(360px, 100%);
+  }
 }

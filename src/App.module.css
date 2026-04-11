@@ -117,7 +117,7 @@
 
 .footer {
   flex-shrink: 0;
-  padding: 26px 20px 30px;
+  padding: 26px 20px calc(30px + env(safe-area-inset-bottom, 0px));
   display: flex;
   justify-content: center;
 }
@@ -135,8 +135,34 @@
 .progressBar {
   height: 100%;
   background: rgba(139, 115, 85, 0.2);
-  transition: width 3s ease-in-out;
+  transition: width 1s ease-in-out;
   border-radius: 1px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 3vh 14px 1.5vh;
+  }
+
+  .taichiStalk {
+    right: 14px;
+    top: 6px;
+  }
+
+  .hexagramName {
+    font-size: 28px;
+    letter-spacing: 8px;
+  }
+
+  .recoverCard {
+    padding: 36px 28px;
+    margin: 0 12px;
+  }
+
+  .recoverActions {
+    flex-direction: column;
+    gap: 16px;
+  }
 }
 
 .confirmArea {

@@ -52,11 +52,11 @@ export function yaoFromTotal(total: number): YaoInfo {
 }
 
 /**
- * 将6个爻转为二进制字符串（初爻在前）
- * 阳=1, 阴=0
+ * 将 6 个爻转为 `HEXAGRAM_TABLE` 的 6 位键：初爻…上爻依次拼接（阳=1 阴=0），
+ * 即「下卦三位（初、二、三）+ 上卦三位（四、五、上）」——与本文件 `HEXAGRAM_TABLE` 的键一致。
  */
-function yaosToBinary(yaos: YaoInfo[]): string {
-  return yaos.map(y => y.isYang ? '1' : '0').join('');
+function yaosToTableBinary(yaos: YaoInfo[]): string {
+  return yaos.map(y => (y.isYang ? '1' : '0')).join('');
 }
 
 /**
@@ -65,10 +65,11 @@ function yaosToBinary(yaos: YaoInfo[]): string {
 function getChangedBinary(yaos: YaoInfo[]): string | null {
   const hasChanging = yaos.some(y => y.isChanging);
   if (!hasChanging) return null;
-  return yaos.map(y => {
-    if (y.isChanging) return y.isYang ? '0' : '1';
-    return y.isYang ? '1' : '0';
-  }).join('');
+  const flipped = yaos.map(y => {
+    if (y.isChanging) return { ...y, isYang: !y.isYang };
+    return y;
+  });
+  return yaosToTableBinary(flipped);
 }
 
 export function getHexagramInfo(yaos: YaoInfo[]): {
@@ -76,10 +77,9 @@ export function getHexagramInfo(yaos: YaoInfo[]): {
   changed: HexagramInfo | null;
   details: HexagramDetails;
 } {
-  const binary = yaosToBinary(yaos);
+  const binary = yaosToTableBinary(yaos);
   const originalName = HEXAGRAM_TABLE[binary] || '未知卦';
 
-  // 上下卦拆分（初爻在index 0，即下卦为0-2，上卦为3-5）
   const lowerTrigram = binary.slice(0, 3);
   const upperTrigram = binary.slice(3, 6);
   const originalSymbol = `${TRIGRAM_NAMES[upperTrigram] || '?'}/${TRIGRAM_NAMES[lowerTrigram] || '?'}`;

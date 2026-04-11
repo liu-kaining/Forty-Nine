@@ -26,7 +26,8 @@ export default function HexagramGallery({ onComplete }: HexagramGalleryProps) {
   const matrix = useMemo(() => {
     return TRIGRAM_ORDER.map(lower => {
       return TRIGRAM_ORDER.map(upper => {
-        const binary = `${lower}${upper}`; // 初爻在前：下卦(0-2) + 上卦(3-5)
+        // 与 HEXAGRAM_TABLE 一致：六位键为「下卦三位 + 上卦三位」（初爻…上爻）
+        const binary = `${lower}${upper}`;
         const name = HEXAGRAM_TABLE[binary] ?? '—';
         return { binary, name, lower, upper };
       });

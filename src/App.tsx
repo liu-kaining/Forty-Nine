@@ -178,13 +178,13 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 4 }}
+              transition={{ duration: 2 }}
             >
               <motion.div
                 className={styles.recoverCard}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 3, delay: 0.5 }}
+                transition={{ duration: 1.4, delay: 0.2 }}
               >
                 <h2 className={styles.recoverTitle}>继续上一次的占卜</h2>
                 <p className={styles.recoverSubtitle}>静心凝神，方可继续</p>
@@ -216,7 +216,7 @@ export default function App() {
               className={styles.stalkArea}
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 8 }}
+              transition={{ duration: 2 }}
             >
               {/* 太极之蓍（准备态点击取走） */}
               {machineState === 'PREPARE' && (
@@ -257,7 +257,7 @@ export default function App() {
               className={styles.hexagramArea}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 10, ease: 'easeOut' }}
+              transition={{ duration: 3, ease: 'easeOut' }}
             >
               <YaoDisplay yaos={yaoResults} large />
               {hexagramInfo && (
@@ -265,7 +265,7 @@ export default function App() {
                   className={styles.hexagramInfo}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 1.5, delay: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   <h2 className={styles.hexagramName}>{hexagramInfo.original.name}</h2>
                   {hexagramInfo.changed && (
@@ -278,7 +278,7 @@ export default function App() {
                     onClick={handleShowDetail}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 2 }}
+                    transition={{ delay: 0.4 }}
                   >
                     查看卦象详解
                   </motion.button>
@@ -289,7 +289,7 @@ export default function App() {
                 onClick={reset}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 2.5 }}
+                transition={{ delay: 0.55 }}
               >
                 再起一卦
               </motion.button>

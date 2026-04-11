@@ -6,14 +6,14 @@ const STORAGE_KEY = 'divination_state';
 
 /** 每个动画阶段的停留时长（ms）——从容、舒缓 */
 const PHASE_TIMING: Record<string, number> = {
-  // 节奏折中：不至于“卡住”，也不至于“太快来不及看”
-  SPLIT:       5200,
-  HANG_ONE:    3400,
-  COUNT_LEFT:  2000,
-  COUNT_RIGHT: 2000,
-  GATHER:      3000,
-  REGROUP:     2400,
-  PAUSE:       1400,
+  // 偏快节奏：减少“等不住”的体感，仍保留阶段可读性
+  SPLIT:       1800,
+  HANG_ONE:    1200,
+  COUNT_LEFT:  650,
+  COUNT_RIGHT: 650,
+  GATHER:      900,
+  REGROUP:     700,
+  PAUSE:       450,
 };
 
 const initialState: DivinationState = {
