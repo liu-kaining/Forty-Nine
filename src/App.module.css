@@ -90,11 +90,36 @@
   margin: 0;
 }
 
-.changedName {
-  font-size: 20px;
-  letter-spacing: 6px;
+.resultKind {
+  font-size: 13px;
+  letter-spacing: 8px;
+  color: #999;
+  margin: 0 0 8px;
+}
+
+.hexagramSymbol {
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: #666;
+  margin: 8px 0 20px;
+}
+
+.resultBlock {
+  margin-bottom: 8px;
+}
+
+.changedBlock {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.changedHexTitle {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 8px;
   color: #8B4513;
-  margin-top: 12px;
+  margin: 0 0 8px;
 }
 
 .resetBtn {
@@ -299,10 +324,19 @@
     letter-spacing: 8px;
   }
 
-  .changedName {
-    font-size: 16px;
-    letter-spacing: 4px;
-    margin-top: 8px;
+  .changedHexTitle {
+    font-size: 20px;
+    letter-spacing: 6px;
+  }
+
+  .hexagramSymbol {
+    font-size: 15px;
+    margin: 6px 0 16px;
+  }
+
+  .changedBlock {
+    margin-top: 28px;
+    padding-top: 22px;
   }
 
   .resetBtn {
@@ -361,9 +395,9 @@
     letter-spacing: 6px;
   }
 
-  .changedName {
-    font-size: 14px;
-    letter-spacing: 3px;
+  .changedHexTitle {
+    font-size: 18px;
+    letter-spacing: 4px;
   }
 
   .resetBtn {

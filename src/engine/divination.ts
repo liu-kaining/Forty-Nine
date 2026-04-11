@@ -72,6 +72,19 @@ function getChangedBinary(yaos: YaoInfo[]): string | null {
   return yaosToTableBinary(flipped);
 }
 
+/** 之卦六爻：老阴→少阳，老阳→少阴，其余不变（用于成卦页展示） */
+export function yaosAfterChange(yaos: YaoInfo[]): YaoInfo[] {
+  return yaos.map(y => {
+    if (y.type === 'oldYang') {
+      return { value: 8, type: 'youngYin', isChanging: false, isYang: false };
+    }
+    if (y.type === 'oldYin') {
+      return { value: 7, type: 'youngYang', isChanging: false, isYang: true };
+    }
+    return y;
+  });
+}
+
 export function getHexagramInfo(yaos: YaoInfo[]): {
   original: HexagramInfo;
   changed: HexagramInfo | null;

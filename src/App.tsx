@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDivinationMachine } from './hooks/useDivinationMachine';
-import { getHexagramInfo } from './engine/divination';
+import { getHexagramInfo, yaosAfterChange } from './engine/divination';
 import StalkBundle from './components/StalkBundle';
 import SplitArea from './components/SplitArea';
 import YaoDisplay from './components/YaoDisplay';
@@ -259,7 +259,6 @@ export default function App() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 3, ease: 'easeOut' }}
             >
-              <YaoDisplay yaos={yaoResults} large />
               {hexagramInfo && (
                 <motion.div
                   className={styles.hexagramInfo}
@@ -267,11 +266,19 @@ export default function App() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
+                  <p className={styles.resultKind}>本卦</p>
                   <h2 className={styles.hexagramName}>{hexagramInfo.original.name}</h2>
+                  <p className={styles.hexagramSymbol}>{hexagramInfo.original.symbol}</p>
+                  <div className={styles.resultBlock}>
+                    <YaoDisplay yaos={yaoResults} large />
+                  </div>
                   {hexagramInfo.changed && (
-                    <p className={styles.changedName}>
-                      之 {hexagramInfo.changed.name}
-                    </p>
+                    <div className={styles.changedBlock}>
+                      <p className={styles.resultKind}>之卦</p>
+                      <h3 className={styles.changedHexTitle}>{hexagramInfo.changed.name}</h3>
+                      <p className={styles.hexagramSymbol}>{hexagramInfo.changed.symbol}</p>
+                      <YaoDisplay yaos={yaosAfterChange(yaoResults)} large />
+                    </div>
                   )}
                   <motion.button
                     className={styles.detailBtn}
