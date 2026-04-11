@@ -38,7 +38,7 @@ export default function HexagramGallery({ onComplete }: HexagramGalleryProps) {
     if (isExiting) return;
     setIsExiting(true);
     // 先淡出，再进入主流程
-    setTimeout(() => onComplete(), 900);
+    setTimeout(() => onComplete(), 420);
   };
 
   return (
@@ -46,7 +46,7 @@ export default function HexagramGallery({ onComplete }: HexagramGalleryProps) {
       className={styles.container}
       initial={{ opacity: 1 }}
       animate={{ opacity: isExiting ? 0 : 1 }}
-      transition={{ duration: 0.9, ease: 'easeInOut' }}
+      transition={{ duration: 0.42, ease: 'easeInOut' }}
     >
       {/* Header (non-blocking) */}
       <div className={styles.topBar}>
@@ -103,9 +103,12 @@ export default function HexagramGallery({ onComplete }: HexagramGalleryProps) {
 
       {/* Start action (does not block viewing the table) */}
       <div className={styles.startDock}>
-        <button className={styles.startButton} onClick={handleClick} disabled={isExiting}>
-          开始占卜
-        </button>
+        <div className={styles.startDockInner}>
+          <div className={styles.startHint}>手机可左右滑动查看完整卦表</div>
+          <button className={styles.startButton} onClick={handleClick} disabled={isExiting}>
+            开始占卜
+          </button>
+        </div>
       </div>
     </motion.div>
   );

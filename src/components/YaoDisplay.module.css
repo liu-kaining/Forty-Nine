@@ -2,32 +2,33 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .container.large {
-  gap: 10px;
+  gap: 12px;
 }
 
 .yaoRow {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .label {
-  width: 20px;
+  width: 24px;
   text-align: right;
-  font-size: 18px;
-  color: #999;
-  letter-spacing: 1px;
+  font-size: 17px;
+  color: #8f8477;
+  letter-spacing: 0.06em;
 }
 
 .valueLabel {
-  width: 52px;
-  font-size: 16px;
-  color: #aaa;
-  letter-spacing: 1px;
+  width: 60px;
+  font-size: 15px;
+  color: #998d7f;
+  letter-spacing: 0.06em;
+  text-align: left;
 }
 
 .valueLabel.changing {
@@ -35,11 +36,11 @@
 }
 
 .yaoLine {
-  width: 160px;
+  width: clamp(150px, 18vw, 180px);
 }
 
 .large .yaoLine {
-  width: 180px;
+  width: clamp(176px, 22vw, 220px);
 }
 
 /* 阳爻：一条长线 */
@@ -52,8 +53,8 @@
 .yangLine {
   width: 100%;
   height: 5px;
-  background: #333;
-  border-radius: 1px;
+  background: linear-gradient(90deg, #2d261f, #494038);
+  border-radius: 999px;
 }
 
 .large .yangLine {
@@ -71,8 +72,8 @@
 .yinRight {
   flex: 1;
   height: 5px;
-  background: #333;
-  border-radius: 1px;
+  background: linear-gradient(90deg, #2d261f, #494038);
+  border-radius: 999px;
 }
 
 .large .yinLeft,
@@ -85,55 +86,56 @@
 }
 
 .large .yinGap {
-  width: 28px;
+  width: 30px;
 }
 
 /* 变爻标记 */
 .changeMark {
   position: absolute;
-  right: -28px;
+  right: -26px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
   color: #8B4513;
   line-height: 1;
+  font-weight: 600;
 }
 
 .large .changeMark {
-  right: -28px;
-  font-size: 16px;
+  right: -30px;
+  font-size: 17px;
 }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
   .container {
-    gap: 4px;
+    gap: 7px;
   }
 
   .container.large {
-    gap: 8px;
+    gap: 9px;
   }
 
   .yaoRow {
-    gap: 8px;
+    gap: 10px;
   }
 
   .label {
-    width: 16px;
+    width: 18px;
     font-size: 12px;
   }
 
   .valueLabel {
-    width: 32px;
-    font-size: 10px;
+    width: 42px;
+    font-size: 11px;
   }
 
   .yaoLine {
-    width: 80px;
+    width: 92px;
   }
 
   .large .yaoLine {
-    width: 120px;
+    width: min(138px, 42vw);
   }
 
   .yangLine,
@@ -153,7 +155,7 @@
   }
 
   .large .yinGap {
-    width: 20px;
+    width: 22px;
   }
 
   .changeMark {
@@ -162,18 +164,18 @@
   }
 
   .large .changeMark {
-    right: -22px;
+    right: -24px;
     font-size: 14px;
   }
 }
 
 @media (max-width: 480px) {
   .yaoLine {
-    width: 70px;
+    width: 80px;
   }
 
   .large .yaoLine {
-    width: 100px;
+    width: min(122px, 44vw);
   }
 
   .label {
@@ -181,6 +183,7 @@
   }
 
   .valueLabel {
-    font-size: 9px;
+    width: 38px;
+    font-size: 10px;
   }
 }

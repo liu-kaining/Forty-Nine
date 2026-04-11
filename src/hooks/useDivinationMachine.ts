@@ -7,13 +7,13 @@ const STORAGE_KEY = 'divination_state';
 /** 每个动画阶段的停留时长（ms）——从容、舒缓 */
 const PHASE_TIMING: Record<string, number> = {
   // 偏快节奏：减少“等不住”的体感，仍保留阶段可读性
-  SPLIT:       1800,
-  HANG_ONE:    1200,
-  COUNT_LEFT:  650,
-  COUNT_RIGHT: 650,
-  GATHER:      900,
-  REGROUP:     700,
-  PAUSE:       450,
+  SPLIT:       950,
+  HANG_ONE:    620,
+  COUNT_LEFT:  380,
+  COUNT_RIGHT: 380,
+  GATHER:      520,
+  REGROUP:     380,
+  PAUSE:       220,
 };
 
 const initialState: DivinationState = {
@@ -122,28 +122,26 @@ export function useDivinationMachine() {
         return { ...prev, animationPhase: 'HANG_ONE' as AnimationPhase };
       }
 
-      // HANG_ONE → COUNT_LEFT (开始逐组揲四)
+      // HANG_ONE → COUNT_LEFT（揲四从 0 组已移开始，与算法「总数 − 余数」再除以 4 一致）
       if (phase === 'HANG_ONE') {
-        return { ...prev, animationPhase: 'COUNT_LEFT' as AnimationPhase, leftGroupsRemoved: 1 };
+        return { ...prev, animationPhase: 'COUNT_LEFT' as AnimationPhase };
       }
 
-      // COUNT_LEFT: 逐组拿走
+      // COUNT_LEFT：只移走「能整除进四」的部分，余数（含整除时余 4）留在桌上，供归奇
       if (phase === 'COUNT_LEFT') {
-        const totalLeftGroups = Math.floor(cr.leftPile / 4);
+        const totalLeftGroups = Math.max(0, (cr.leftPile - cr.leftRemainder) / 4);
         if (prev.leftGroupsRemoved < totalLeftGroups) {
           return { ...prev, leftGroupsRemoved: prev.leftGroupsRemoved + 1 };
         }
-        // 左堆完了 → 右堆
-        return { ...prev, animationPhase: 'COUNT_RIGHT' as AnimationPhase, rightGroupsRemoved: 1 };
+        return { ...prev, animationPhase: 'COUNT_RIGHT' as AnimationPhase };
       }
 
-      // COUNT_RIGHT: 逐组拿走
+      // COUNT_RIGHT：同上
       if (phase === 'COUNT_RIGHT') {
-        const totalRightGroups = Math.floor(cr.rightPile / 4);
+        const totalRightGroups = Math.max(0, (cr.rightPile - cr.rightRemainder) / 4);
         if (prev.rightGroupsRemoved < totalRightGroups) {
           return { ...prev, rightGroupsRemoved: prev.rightGroupsRemoved + 1 };
         }
-        // 右堆完了 → GATHER
         return { ...prev, animationPhase: 'GATHER' as AnimationPhase };
       }
 

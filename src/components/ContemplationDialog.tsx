@@ -12,10 +12,10 @@ export default function ContemplationDialog({ onConfirm }: ContemplationDialogPr
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
-    timers.push(setTimeout(() => setPhase(1), 500));
-    timers.push(setTimeout(() => setPhase(2), 2000));
-    timers.push(setTimeout(() => setPhase(3), 3500));
-    timers.push(setTimeout(() => setShowTimer(true), 5000));
+    timers.push(setTimeout(() => setPhase(1), 180));
+    timers.push(setTimeout(() => setPhase(2), 760));
+    timers.push(setTimeout(() => setPhase(3), 1320));
+    timers.push(setTimeout(() => setShowTimer(true), 1760));
     return () => timers.forEach(clearTimeout);
   }, []);
 
@@ -29,14 +29,14 @@ export default function ContemplationDialog({ onConfirm }: ContemplationDialogPr
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 3 }}
+      transition={{ duration: 0.35 }}
     >
       <div className={styles.card}>
         <motion.div
           className={styles.content}
           initial={{ opacity: 0, y: 20 }}
           animate={phase >= 1 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 2.5 }}
+          transition={{ duration: 0.4 }}
         >
           <h2 className={styles.title}>占卜之道</h2>
         </motion.div>
@@ -45,7 +45,7 @@ export default function ContemplationDialog({ onConfirm }: ContemplationDialogPr
           className={styles.verse}
           initial={{ opacity: 0 }}
           animate={phase >= 2 ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 3 }}
+          transition={{ duration: 0.4 }}
         >
           <p>「蓍之诚，诚之至」</p>
           <p>「心有所疑，事有所见」</p>
@@ -56,7 +56,7 @@ export default function ContemplationDialog({ onConfirm }: ContemplationDialogPr
           className={styles.warning}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={phase >= 3 ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-          transition={{ duration: 3 }}
+          transition={{ duration: 0.4 }}
         >
           <div className={styles.warningIcon}>!</div>
           <p>占卜非儿戏</p>
@@ -68,7 +68,7 @@ export default function ContemplationDialog({ onConfirm }: ContemplationDialogPr
           className={styles.prompt}
           initial={{ opacity: 0 }}
           animate={showTimer ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 2 }}
+          transition={{ duration: 0.35 }}
         >
           <p className={styles.promptText}>静心凝神</p>
           <p className={styles.promptText}>默念所问之事</p>
@@ -80,7 +80,7 @@ export default function ContemplationDialog({ onConfirm }: ContemplationDialogPr
           onClick={handleConfirm}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 2, delay: 1 }}
+          transition={{ duration: 0.45, delay: 0.22 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

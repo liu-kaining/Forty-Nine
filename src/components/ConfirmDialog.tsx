@@ -20,7 +20,7 @@ export default function ConfirmDialog({ onConfirm, onCancel }: ConfirmDialogProp
     // 依次显示三不占原则
     const timers: ReturnType<typeof setTimeout>[] = [];
     PRINCIPLES.forEach((_, i) => {
-      timers.push(setTimeout(() => setCurrentIndex(i), 800 + i * 600));
+      timers.push(setTimeout(() => setCurrentIndex(i), 220 + i * 240));
     });
     return () => timers.forEach(clearTimeout);
   }, []);
@@ -35,14 +35,14 @@ export default function ConfirmDialog({ onConfirm, onCancel }: ConfirmDialogProp
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 2 }}
+      transition={{ duration: 0.35 }}
     >
       <div className={styles.card}>
         <motion.h2
           className={styles.title}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 2 }}
+          transition={{ duration: 0.4 }}
         >
           三不占
         </motion.h2>
@@ -54,7 +54,7 @@ export default function ConfirmDialog({ onConfirm, onCancel }: ConfirmDialogProp
               className={styles.principle}
               initial={{ opacity: 0, x: -20 }}
               animate={currentIndex >= i ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 1.5 }}
+              transition={{ duration: 0.35 }}
             >
               <span className={styles.principleTitle}>{p.title}</span>
               <span className={styles.principleDesc}>{p.desc}</span>
@@ -66,13 +66,13 @@ export default function ConfirmDialog({ onConfirm, onCancel }: ConfirmDialogProp
           className={styles.confirmArea}
           initial={{ opacity: 0 }}
           animate={currentIndex >= 2 ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 2 }}
+          transition={{ duration: 0.3 }}
         >
           <p className={styles.hint}>请以手代心，确认以上三则</p>
           <motion.div
             className={styles.swipeHint}
             animate={{ x: [0, 30, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
           >
             &#8594; 划动确认
           </motion.div>
@@ -84,26 +84,30 @@ export default function ConfirmDialog({ onConfirm, onCancel }: ConfirmDialogProp
                 if (moveE.clientX - startX > 50) {
                   handleSwipeConfirm();
                   window.removeEventListener('pointermove', handleMove);
+                  window.removeEventListener('pointerup', handleUp);
                 }
               };
               const handleUp = () => {
                 window.removeEventListener('pointermove', handleMove);
+                window.removeEventListener('pointerup', handleUp);
               };
               window.addEventListener('pointermove', handleMove);
               window.addEventListener('pointerup', handleUp);
             }}
           >
             <div className={styles.swipeTrack}>
+              <div className={styles.swipeText}>向右确认</div>
               <motion.div
                 className={styles.swipeThumb}
                 drag="x"
                 dragConstraints={{ left: 0, right: 120 }}
-                dragElastic={0.1}
+                dragElastic={0.08}
                 onDragEnd={(_, info) => {
-                  if (info.offset.x > 80) {
-                    handleSwipeConfirm();
-                  }
+                  if (info.offset.x > 72) {
+                  handleSwipeConfirm();
+                }
                 }}
+                whileTap={{ scale: 0.96 }}
               />
             </div>
           </div>

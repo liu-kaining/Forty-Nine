@@ -172,7 +172,7 @@ export default function StalkBundle({
               initial={{ opacity: 0, y: 8, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: 'easeOut' }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
             >
               {leftGroupsRemoved * 4}
             </motion.div>
@@ -189,8 +189,8 @@ export default function StalkBundle({
                 key={`lg-${leftGroupsRemoved}`}
                 className={styles.flyingGroup}
                 initial={{ opacity: 1, y: 0, x: 0 }}
-                animate={{ opacity: 0, y: -80, x: -40 }}
-                transition={{ duration: 6, ease: [0.4, 0, 0.2, 1] }}
+                animate={{ opacity: 0, y: -44, x: -24 }}
+                transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               >
                 {leftCurrentGroup.map(s => (
                   <div key={s.id} className={styles.stalk} style={{ height: '40px' }} />
@@ -207,7 +207,7 @@ export default function StalkBundle({
               className={styles.hungArea}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: -30 }}
-              transition={{ duration: 2.2, ease: EASE_SMOOTH }}
+              transition={{ duration: 0.8, ease: EASE_SMOOTH }}
             >
               <div className={styles.stalk} style={{ height: '35vh', minHeight: '140px', maxHeight: '280px' }} />
               <span className={styles.hungLabel}>挂一</span>
@@ -229,7 +229,7 @@ export default function StalkBundle({
               initial={{ opacity: 0, y: 8, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: 'easeOut' }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
             >
               {rightGroupsRemoved * 4}
             </motion.div>
@@ -245,8 +245,8 @@ export default function StalkBundle({
                 key={`rg-${rightGroupsRemoved}`}
                 className={styles.flyingGroup}
                 initial={{ opacity: 1, y: 0, x: 0 }}
-                animate={{ opacity: 0, y: -80, x: 40 }}
-                transition={{ duration: 6, ease: [0.4, 0, 0.2, 1] }}
+                animate={{ opacity: 0, y: -44, x: 24 }}
+                transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               >
                 {rightCurrentGroup.map(s => (
                   <div key={s.id} className={styles.stalk} style={{ height: '40px' }} />
@@ -265,7 +265,7 @@ export default function StalkBundle({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 0.7, y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 10, ease: 'easeInOut' }}
+            transition={{ duration: 0.45, ease: 'easeInOut' }}
           >
             <span className={styles.gatherText}>
               归余 {changeResult ? changeResult.removed : 0} 根
@@ -280,7 +280,7 @@ export default function StalkBundle({
             className={styles.remainText}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 8, delay: 0.5 }}
+            transition={{ duration: 0.4, delay: 0.08 }}
           >
             余 {changeResult.nextTotal} 根
           </motion.div>

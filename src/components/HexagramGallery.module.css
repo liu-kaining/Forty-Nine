@@ -12,7 +12,7 @@
   left: 0;
   right: 0;
   z-index: 30;
-  padding: calc(14px + env(safe-area-inset-top, 0px)) 18px 10px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 18px 10px;
   pointer-events: none;
   background: linear-gradient(
     to bottom,
@@ -25,8 +25,8 @@
 
 .topTitle {
   text-align: center;
-  font-size: 22px;
-  letter-spacing: 10px;
+  font-size: 21px;
+  letter-spacing: 0.22em;
   color: #4A3F30;
 }
 
@@ -34,7 +34,7 @@
   margin-top: 8px;
   text-align: center;
   font-size: 13px;
-  letter-spacing: 4px;
+  letter-spacing: 0.12em;
   color: #a09080;
 }
 
@@ -69,14 +69,15 @@
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  padding: 74px 12px calc(120px + env(safe-area-inset-bottom, 0px));
+  padding: 70px 12px calc(132px + env(safe-area-inset-bottom, 0px));
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .matrixWrap {
   width: 100%;
   overflow-x: auto;
-  padding-top: 60px;
+  padding-top: 48px;
 }
 
 .matrixGrid {
@@ -101,7 +102,7 @@
   background: rgba(245, 240, 230, 0.92);
   backdrop-filter: blur(6px);
   border: 1px solid rgba(212, 200, 176, 0.7);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px 8px 8px;
   text-align: center;
   z-index: 2;
@@ -117,7 +118,7 @@
   background: rgba(245, 240, 230, 0.92);
   backdrop-filter: blur(6px);
   border: 1px solid rgba(212, 200, 176, 0.7);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px 8px 8px;
   text-align: center;
   z-index: 1;
@@ -131,30 +132,32 @@
 
 .headerName {
   font-size: 14px;
-  letter-spacing: 4px;
+  letter-spacing: 0.16em;
   color: #6a5a4a;
   margin-top: 6px;
 }
 
 .headerHint {
   font-size: 11px;
-  letter-spacing: 3px;
+  letter-spacing: 0.14em;
   color: #b0a090;
   margin-top: 6px;
 }
 
 .hexagramCell {
-  background: #faf6ef;
+  background: rgba(250, 246, 239, 0.94);
   border: 1px solid #d4c8b0;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px 10px 10px;
   text-align: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  content-visibility: auto;
 }
 
 .hexagramCell:hover {
   border-color: #a09080;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
   transform: translateY(-1px);
 }
 
@@ -174,7 +177,7 @@
 
 .hexagramName {
   font-size: 14px;
-  letter-spacing: 2px;
+  letter-spacing: 0.08em;
   color: #6a5a4a;
 }
 
@@ -196,6 +199,20 @@
   backdrop-filter: blur(6px);
 }
 
+.startDockInner {
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.startHint {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #9d8e7d;
+}
+
 .startButton {
   appearance: none;
   border: 1px solid #c0b090;
@@ -203,12 +220,13 @@
   color: #4A3F30;
   font-family: inherit;
   font-size: 16px;
-  letter-spacing: 8px;
+  letter-spacing: 0.2em;
   padding: 14px 34px;
-  border-radius: 10px;
+  border-radius: 999px;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
 .startButton:hover {
@@ -226,12 +244,16 @@
 @media (max-width: 768px) {
   .topTitle {
     font-size: 18px;
-    letter-spacing: 6px;
+    letter-spacing: 0.16em;
   }
 
   .topSub {
     font-size: 12px;
-    letter-spacing: 3px;
+    letter-spacing: 0.08em;
+  }
+
+  .gallery {
+    padding-top: 64px;
   }
 
   .matrixGrid {
@@ -260,12 +282,21 @@
 
   .hexagramName {
     font-size: 12px;
-    letter-spacing: 1px;
+    letter-spacing: 0.04em;
+  }
+
+  .startDockInner {
+    gap: 8px;
+  }
+
+  .startHint {
+    font-size: 11px;
+    letter-spacing: 0.04em;
   }
 
   .startButton {
     font-size: 15px;
-    letter-spacing: 6px;
+    letter-spacing: 0.16em;
     padding: 12px 28px;
     width: min(360px, 100%);
   }

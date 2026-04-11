@@ -1,7 +1,8 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(245, 240, 230, 0.97);
+  background: rgba(245, 240, 230, 0.9);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,45 +10,45 @@
 }
 
 .card {
-  background: #faf6ef;
+  background: rgba(250, 246, 239, 0.96);
   border: 1px solid #d4c8b0;
-  border-radius: 16px;
-  padding: 50px 60px;
-  max-width: 480px;
+  border-radius: 22px;
+  padding: 36px 30px 30px;
+  width: min(500px, calc(100% - 24px));
   text-align: center;
-  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.1);
 }
 
 .content {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .title {
-  font-size: 26px;
-  letter-spacing: 16px;
+  font-size: 25px;
+  letter-spacing: 0.24em;
   color: #4A3F30;
   margin: 0;
   font-weight: normal;
 }
 
 .verse {
-  margin-bottom: 30px;
+  margin-bottom: 22px;
 }
 
 .verse p {
-  font-size: 17px;
-  letter-spacing: 4px;
+  font-size: 16px;
+  letter-spacing: 0.08em;
   color: #6a5a4a;
-  margin: 8px 0;
-  line-height: 1.8;
+  margin: 6px 0;
+  line-height: 1.7;
 }
 
 .warning {
   background: #f5efe5;
   border: 1px solid #d4c8b0;
-  border-radius: 8px;
-  padding: 24px 30px;
-  margin-bottom: 30px;
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  margin-bottom: 22px;
 }
 
 .warningIcon {
@@ -64,41 +65,42 @@
 }
 
 .warning p {
-  font-size: 16px;
-  letter-spacing: 6px;
+  font-size: 15px;
+  letter-spacing: 0.14em;
   color: #8B4513;
   margin: 6px 0;
   font-weight: 500;
 }
 
 .prompt {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .promptText {
-  font-size: 20px;
-  letter-spacing: 8px;
+  font-size: 19px;
+  letter-spacing: 0.16em;
   color: #4A3F30;
   margin: 8px 0;
 }
 
 .promptTextSub {
-  font-size: 15px;
-  letter-spacing: 4px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
   color: #a09080;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .confirmBtn {
   background: #6B5438;
   border: none;
   color: #faf6ef;
-  padding: 16px 48px;
-  font-size: 17px;
-  letter-spacing: 6px;
+  padding: 14px 28px;
+  font-size: 16px;
+  letter-spacing: 0.16em;
   cursor: pointer;
   font-family: inherit;
-  border-radius: 6px;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(107, 84, 56, 0.18);
   transition: all 0.3s ease;
 }
 
@@ -117,11 +119,39 @@
   .card {
     max-width: 100%;
     width: 100%;
-    padding: 34px 22px;
+    padding: 28px 18px 22px;
     margin-top: 6vh;
+    border-radius: 18px;
   }
 
   .title {
-    letter-spacing: 10px;
+    font-size: 21px;
+    letter-spacing: 0.16em;
+  }
+
+  .verse p {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  .warning p {
+    font-size: 14px;
+    letter-spacing: 0.08em;
+  }
+
+  .promptText {
+    font-size: 17px;
+    letter-spacing: 0.1em;
+  }
+
+  .promptTextSub {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .confirmBtn {
+    width: 100%;
+    font-size: 15px;
+    letter-spacing: 0.12em;
   }
 }

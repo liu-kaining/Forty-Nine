@@ -5,11 +5,44 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  isolation: isolate;
+}
+
+.app::before,
+.app::after {
+  content: '';
+  position: absolute;
+  inset: auto;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.app::before {
+  top: -12vh;
+  left: -12vw;
+  width: 36vw;
+  height: 36vw;
+  min-width: 220px;
+  min-height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 190, 150, 0.22) 0%, rgba(212, 190, 150, 0) 72%);
+  filter: blur(6px);
+}
+
+.app::after {
+  right: -10vw;
+  bottom: 6vh;
+  width: 30vw;
+  height: 30vw;
+  min-width: 220px;
+  min-height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 115, 85, 0.08) 0%, rgba(139, 115, 85, 0) 72%);
 }
 
 .header {
   flex-shrink: 0;
-  padding: 5vh 20px 2vh;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 8px;
 }
 
 .main {
@@ -19,13 +52,21 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 0 20px;
+}
+
+.mainScrollable {
+  overflow-y: auto;
+  align-items: flex-start;
+  padding-top: 10px;
+  padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  overscroll-behavior: contain;
 }
 
 .stalkArea {
   position: relative;
-  width: 90%;
-  max-width: 900px;
-  min-height: 60vh;
+  width: min(94%, 980px);
+  min-height: min(64vh, 680px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,168 +75,196 @@
 
 .taichiStalk {
   position: absolute;
-  top: 0;
-  right: 40px;
+  top: 4px;
+  right: clamp(16px, 4vw, 40px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
   z-index: 20;
+  padding: 8px 6px;
+  border-radius: 16px;
 }
 
 .singleStalk {
   width: 6px;
-  height: 30vh;
-  min-height: 120px;
-  max-height: 300px;
+  height: clamp(150px, 29vh, 300px);
   background: linear-gradient(
     to bottom,
-    #6B5438 0%,
-    #8B7355 10%,
-    #C4A87C 30%,
-    #D4BE96 50%,
-    #C4A87C 70%,
-    #8B7355 90%,
-    #6B5438 100%
+    #6b5438 0%,
+    #8b7355 10%,
+    #c4a87c 30%,
+    #d4be96 50%,
+    #c4a87c 70%,
+    #8b7355 90%,
+    #6b5438 100%
   );
-  border-radius: 3px;
+  border-radius: 999px;
   box-shadow:
-    1px 0 2px rgba(0,0,0,0.08),
-    0 0 8px rgba(196, 168, 124, 0.25);
+    1px 0 2px rgba(0, 0, 0, 0.08),
+    0 0 12px rgba(196, 168, 124, 0.2);
 }
 
 .taichiLabel {
   font-size: 12px;
-  color: #aaa;
-  letter-spacing: 3px;
+  color: #9f9381;
+  letter-spacing: 0.22em;
 }
 
 .hexagramArea {
+  width: min(100%, 700px);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
+  justify-content: center;
+  padding: 0 0 12px;
 }
 
 .hexagramInfo {
+  width: min(100%, 560px);
   text-align: center;
+  background: rgba(250, 246, 239, 0.82);
+  border: 1px solid rgba(212, 200, 176, 0.9);
+  border-radius: 24px;
+  padding: 28px 28px 24px;
+  box-shadow:
+    0 18px 50px rgba(74, 63, 48, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(10px);
 }
 
 .hexagramName {
-  font-size: 36px;
+  font-size: clamp(29px, 3vw, 40px);
   font-weight: 400;
-  letter-spacing: 12px;
-  color: #333;
+  letter-spacing: 0.28em;
+  color: #342b22;
   margin: 0;
 }
 
 .resultKind {
-  font-size: 13px;
-  letter-spacing: 8px;
-  color: #999;
-  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  color: #9f9381;
+  margin: 0 0 10px;
 }
 
 .hexagramSymbol {
-  font-size: 18px;
-  letter-spacing: 4px;
-  color: #666;
-  margin: 8px 0 20px;
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: #6d6357;
+  margin: 8px 0 22px;
 }
 
 .resultBlock {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .changingYaoNote {
   font-size: 14px;
-  letter-spacing: 3px;
+  letter-spacing: 0.12em;
   color: #7a5c3a;
-  margin: 0 0 4px;
-  line-height: 1.6;
+  margin: 2px 0 8px;
+  line-height: 1.7;
 }
 
 .changedBlock {
-  margin-top: 28px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(107, 84, 56, 0.1);
 }
 
 .changedHexTitle {
-  font-size: 26px;
+  font-size: clamp(22px, 2.2vw, 28px);
   font-weight: 400;
-  letter-spacing: 8px;
-  color: #8B4513;
+  letter-spacing: 0.22em;
+  color: #8b4513;
   margin: 0 0 8px;
 }
 
+.resultActions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detailBtn,
 .resetBtn {
-  margin-top: 30px;
-  padding: 14px 40px;
-  background: transparent;
-  border: 1px solid #ccc;
-  color: #888;
-  font-size: 15px;
-  letter-spacing: 6px;
+  min-width: 164px;
+  padding: 12px 22px;
+  font-size: 14px;
+  letter-spacing: 0.22em;
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.3s ease;
+  border-radius: 999px;
+  transition:
+    transform 0.18s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.detailBtn {
+  background: rgba(245, 240, 230, 0.86);
+  border: 1px solid #cdbd9f;
+  color: #7b664b;
+}
+
+.resetBtn {
+  background: #6b5438;
+  border: 1px solid #6b5438;
+  color: #faf6ef;
+  box-shadow: 0 10px 24px rgba(107, 84, 56, 0.18);
+}
+
+.detailBtn:hover,
+.resetBtn:hover {
+  transform: translateY(-1px);
+}
+
+.detailBtn:hover {
+  border-color: #ab9a7f;
+  color: #5f4c35;
+  background: #f6f1e9;
 }
 
 .resetBtn:hover {
-  border-color: #999;
-  color: #555;
+  background: #5a4530;
+  border-color: #5a4530;
+  box-shadow: 0 12px 26px rgba(107, 84, 56, 0.22);
 }
 
 .footer {
   flex-shrink: 0;
-  padding: 26px 20px calc(30px + env(safe-area-inset-bottom, 0px));
+  padding: 18px 20px calc(22px + env(safe-area-inset-bottom, 0px));
   display: flex;
   justify-content: center;
+  background: linear-gradient(
+    to top,
+    rgba(245, 240, 232, 0.92) 0%,
+    rgba(245, 240, 232, 0.74) 55%,
+    rgba(245, 240, 232, 0) 100%
+  );
 }
 
 .progress {
   position: absolute;
   bottom: 0;
-  left: 10%;
-  width: 80%;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.03);
-  border-radius: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(80%, 760px);
+  height: 2px;
+  background: rgba(107, 84, 56, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 .progressBar {
   height: 100%;
-  background: rgba(139, 115, 85, 0.2);
-  transition: width 1s ease-in-out;
-  border-radius: 1px;
-}
-
-@media (max-width: 768px) {
-  .header {
-    padding: 3vh 14px 1.5vh;
-  }
-
-  .taichiStalk {
-    right: 14px;
-    top: 6px;
-  }
-
-  .hexagramName {
-    font-size: 28px;
-    letter-spacing: 8px;
-  }
-
-  .recoverCard {
-    padding: 36px 28px;
-    margin: 0 12px;
-  }
-
-  .recoverActions {
-    flex-direction: column;
-    gap: 16px;
-  }
+  background: linear-gradient(90deg, rgba(139, 115, 85, 0.18), rgba(139, 115, 85, 0.4));
+  transition: width 0.55s ease;
+  border-radius: inherit;
 }
 
 .confirmArea {
@@ -207,228 +276,258 @@
 .recoverArea {
   position: fixed;
   inset: 0;
-  background: rgba(245, 240, 230, 0.95);
+  background: rgba(245, 240, 230, 0.84);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  padding: 16px;
 }
 
 .recoverCard {
-  background: #faf6ef;
-  border: 1px solid #d4c8b0;
-  border-radius: 12px;
-  padding: 50px 60px;
+  width: min(100%, 520px);
+  background: rgba(250, 246, 239, 0.95);
+  border: 1px solid rgba(212, 200, 176, 0.95);
+  border-radius: 20px;
+  padding: 40px 36px;
   text-align: center;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
 }
 
 .recoverTitle {
   font-size: 20px;
-  letter-spacing: 8px;
-  color: #4A3F30;
-  margin: 0 0 16px;
-  font-weight: normal;
+  letter-spacing: 0.22em;
+  color: #4a3f30;
+  margin: 0 0 14px;
+  font-weight: 400;
 }
 
 .recoverSubtitle {
   font-size: 14px;
-  letter-spacing: 4px;
-  color: #a09080;
-  margin: 0 0 40px;
+  letter-spacing: 0.14em;
+  color: #9a8b79;
+  margin: 0 0 28px;
 }
 
 .recoverActions {
   display: flex;
-  gap: 30px;
+  gap: 14px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .resumeBtn,
 .restartBtn {
-  padding: 12px 36px;
-  font-size: 15px;
-  letter-spacing: 5px;
+  min-width: 156px;
+  padding: 12px 22px;
+  font-size: 14px;
+  letter-spacing: 0.18em;
   cursor: pointer;
   font-family: inherit;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  border-radius: 999px;
+  transition:
+    transform 0.18s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .resumeBtn {
-  background: #6B5438;
-  border: 1px solid #6B5438;
+  background: #6b5438;
+  border: 1px solid #6b5438;
   color: #faf6ef;
 }
 
 .resumeBtn:hover {
   background: #5a4530;
+  transform: translateY(-1px);
 }
 
 .restartBtn {
   background: transparent;
   border: 1px solid #c0b090;
-  color: #8B7355;
+  color: #8b7355;
 }
 
 .restartBtn:hover {
   border-color: #a09070;
-  color: #6B5438;
+  color: #6b5438;
+  transform: translateY(-1px);
 }
 
-.detailBtn {
-  margin-top: 20px;
-  padding: 12px 32px;
-  background: transparent;
-  border: 1px solid #c0b090;
-  color: #8B7355;
-  font-size: 14px;
-  letter-spacing: 5px;
-  cursor: pointer;
-  font-family: inherit;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.detailBtn:hover {
-  border-color: #a09070;
-  color: #6B5438;
-  background: #f5f0e6;
-}
-
-/* 移动端适配 */
 @media (max-width: 768px) {
   .header {
-    padding: 3vh 16px 2vh;
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 4px;
+  }
+
+  .main {
+    padding: 0 12px;
+  }
+
+  .mainScrollable {
+    padding-top: 0;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   }
 
   .stalkArea {
-    width: 95%;
-    min-height: 50vh;
+    width: 100%;
+    min-height: 52vh;
   }
 
   .taichiStalk {
-    right: 20px;
+    top: 0;
+    right: 6px;
+    gap: 5px;
   }
 
   .singleStalk {
     width: 4px;
-    height: 20vh;
-    min-height: 80px;
-    max-height: 200px;
+    height: clamp(100px, 21vh, 190px);
   }
 
   .taichiLabel {
     font-size: 10px;
-    letter-spacing: 2px;
+    letter-spacing: 0.16em;
   }
 
   .hexagramArea {
-    gap: 24px;
+    width: 100%;
+    padding-bottom: 8px;
+  }
+
+  .hexagramInfo {
+    width: 100%;
+    padding: 20px 16px 18px;
+    border-radius: 18px;
   }
 
   .hexagramName {
-    font-size: 24px;
-    letter-spacing: 8px;
+    font-size: 25px;
+    letter-spacing: 0.18em;
   }
 
-  .changedHexTitle {
-    font-size: 20px;
-    letter-spacing: 6px;
+  .resultKind {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    margin-bottom: 8px;
   }
 
   .hexagramSymbol {
-    font-size: 15px;
-    margin: 6px 0 16px;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    margin: 6px 0 14px;
   }
 
   .changingYaoNote {
     font-size: 13px;
-    letter-spacing: 2px;
+    letter-spacing: 0.08em;
   }
 
   .changedBlock {
-    margin-top: 24px;
-    padding-top: 22px;
+    margin-top: 18px;
+    padding-top: 18px;
   }
 
+  .changedHexTitle {
+    font-size: 20px;
+    letter-spacing: 0.16em;
+  }
+
+  .resultActions {
+    margin-top: 18px;
+    gap: 10px;
+  }
+
+  .detailBtn,
   .resetBtn {
-    margin-top: 20px;
-    padding: 12px 32px;
-    font-size: 14px;
-    letter-spacing: 4px;
+    width: 100%;
+    min-width: 0;
+    padding: 12px 18px;
+    font-size: 13px;
+    letter-spacing: 0.14em;
   }
 
   .footer {
-    padding: 16px;
+    padding: 12px 10px calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .progress {
+    width: calc(100% - 28px);
+  }
+
+  .recoverArea {
+    align-items: flex-start;
+    overflow-y: auto;
   }
 
   .recoverCard {
-    padding: 40px 30px;
-    margin: 0 20px;
+    margin-top: 8vh;
+    padding: 32px 22px;
+    border-radius: 18px;
   }
 
   .recoverTitle {
     font-size: 18px;
-    letter-spacing: 6px;
+    letter-spacing: 0.16em;
   }
 
   .recoverSubtitle {
     font-size: 13px;
-    letter-spacing: 3px;
-    margin-bottom: 30px;
+    letter-spacing: 0.08em;
+    margin-bottom: 24px;
   }
 
   .recoverActions {
     flex-direction: column;
-    gap: 16px;
   }
 
   .resumeBtn,
   .restartBtn {
-    padding: 12px 28px;
-    font-size: 14px;
-    letter-spacing: 4px;
-  }
-
-  .detailBtn {
-    padding: 10px 24px;
+    width: 100%;
+    min-width: 0;
     font-size: 13px;
-    letter-spacing: 3px;
+    letter-spacing: 0.14em;
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    padding: 2vh 12px 1.5vh;
+    padding-inline: 10px;
+  }
+
+  .main {
+    padding-inline: 10px;
+  }
+
+  .hexagramInfo {
+    padding: 18px 14px 16px;
   }
 
   .hexagramName {
-    font-size: 20px;
-    letter-spacing: 6px;
+    font-size: 22px;
+    letter-spacing: 0.14em;
   }
 
   .changedHexTitle {
     font-size: 18px;
-    letter-spacing: 4px;
-  }
-
-  .resetBtn {
-    padding: 10px 28px;
-    font-size: 13px;
+    letter-spacing: 0.12em;
   }
 
   .recoverCard {
-    padding: 32px 24px;
+    padding: 26px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detailBtn,
+  .resetBtn,
+  .resumeBtn,
+  .restartBtn {
+    transition: none;
   }
 
-  .recoverTitle {
-    font-size: 16px;
-    letter-spacing: 5px;
-  }
-
-  .recoverSubtitle {
-    font-size: 12px;
-    letter-spacing: 2px;
+  .progressBar {
+    transition: none;
   }
 }

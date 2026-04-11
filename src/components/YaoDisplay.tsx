@@ -30,7 +30,7 @@ export default function YaoDisplay({ yaos, large = false }: YaoDisplayProps) {
               className={styles.yaoRow}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: displayIndex * 0.15, ease: 'easeOut' }}
+              transition={{ duration: 0.42, delay: displayIndex * 0.06, ease: 'easeOut' }}
             >
               {large && (
                 <span className={styles.label}>{YAO_LABELS[yaoIndex]}</span>

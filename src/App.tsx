@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDivinationMachine } from './hooks/useDivinationMachine';
 import { getHexagramInfo, yaosAfterChange } from './engine/divination';
@@ -125,11 +125,20 @@ export default function App() {
   };
 
   const prompt = getPromptText();
+  const isHexagramComplete = machineState === 'HEXAGRAM_COMPLETE';
 
   // 成卦信息
-  const hexagramInfo = machineState === 'HEXAGRAM_COMPLETE' && yaoResults.length === 6
+  const hexagramInfo = isHexagramComplete && yaoResults.length === 6
     ? getHexagramInfo(yaoResults)
     : null;
+  const changingYaoNames = useMemo(
+    () => YAO_NAMES.filter((_, i) => yaoResults[i]?.isChanging).join('、'),
+    [yaoResults]
+  );
+  const changedYaos = useMemo(
+    () => (hexagramInfo?.changed ? yaosAfterChange(yaoResults) : []),
+    [hexagramInfo, yaoResults]
+  );
 
   if (screen === 'HOME') {
     return <HomeIntro onEnterGallery={handleEnterGallery} />;
@@ -157,7 +166,7 @@ export default function App() {
       </header>
 
       {/* 主区域 */}
-      <main className={styles.main}>
+      <main className={`${styles.main} ${isHexagramComplete ? styles.mainScrollable : ''}`}>
         <AnimatePresence mode="wait">
           {machineState === 'CONFIRMING' && (
             <motion.div key="confirm" className={styles.confirmArea}>
@@ -178,13 +187,13 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 2 }}
+              transition={{ duration: 0.35 }}
             >
               <motion.div
                 className={styles.recoverCard}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.4, delay: 0.2 }}
+                transition={{ duration: 0.45, delay: 0.08 }}
               >
                 <h2 className={styles.recoverTitle}>继续上一次的占卜</h2>
                 <p className={styles.recoverSubtitle}>静心凝神，方可继续</p>
@@ -210,13 +219,13 @@ export default function App() {
             </motion.div>
           )}
 
-          {machineState !== 'CONFIRMING' && machineState !== 'CONTEMPLATING' && machineState !== 'RECOVERING' && machineState !== 'HEXAGRAM_COMPLETE' ? (
+          {machineState !== 'CONFIRMING' && machineState !== 'CONTEMPLATING' && machineState !== 'RECOVERING' && !isHexagramComplete ? (
             <motion.div
               key="stalks"
               className={styles.stalkArea}
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 2 }}
+              transition={{ duration: 0.35 }}
             >
               {/* 太极之蓍（准备态点击取走） */}
               {machineState === 'PREPARE' && (
@@ -227,7 +236,7 @@ export default function App() {
                   whileTap={{ scale: 0.9 }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 1, delay: 0.5 }}
+                  transition={{ duration: 0.45, delay: 0.08 }}
                 >
                   <div className={styles.singleStalk} />
                   <span className={styles.taichiLabel}>太极</span>
@@ -251,20 +260,20 @@ export default function App() {
                 onSplit={handleSplit}
               />
             </motion.div>
-          ) : machineState === 'HEXAGRAM_COMPLETE' && (
+          ) : isHexagramComplete && (
             <motion.div
               key="hexagram"
               className={styles.hexagramArea}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 3, ease: 'easeOut' }}
+              transition={{ duration: 0.65, ease: 'easeOut' }}
             >
               {hexagramInfo && (
                 <motion.div
                   className={styles.hexagramInfo}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
+                  transition={{ duration: 0.45, delay: 0.1 }}
                 >
                   <p className={styles.resultKind}>本卦</p>
                   <h2 className={styles.hexagramName}>{hexagramInfo.original.name}</h2>
@@ -276,50 +285,52 @@ export default function App() {
                     <>
                       <p className={styles.changingYaoNote}>
                         动爻：
-                        {YAO_NAMES.filter((_, i) => yaoResults[i]?.isChanging).join('、')}
+                        {changingYaoNames}
                       </p>
                       <div className={styles.changedBlock}>
                         <p className={styles.resultKind}>之卦</p>
                         <h3 className={styles.changedHexTitle}>{hexagramInfo.changed.name}</h3>
                         <p className={styles.hexagramSymbol}>{hexagramInfo.changed.symbol}</p>
-                        <YaoDisplay yaos={yaosAfterChange(yaoResults)} large />
+                        <YaoDisplay yaos={changedYaos} large />
                       </div>
                     </>
                   )}
-                  <motion.button
-                    className={styles.detailBtn}
-                    onClick={handleShowDetail}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    查看卦象详解
-                  </motion.button>
+                  <div className={styles.resultActions}>
+                    <motion.button
+                      className={styles.detailBtn}
+                      onClick={handleShowDetail}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      查看卦象详解
+                    </motion.button>
+                    <motion.button
+                      className={styles.resetBtn}
+                      onClick={reset}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      再起一卦
+                    </motion.button>
+                  </div>
                 </motion.div>
               )}
-              <motion.button
-                className={styles.resetBtn}
-                onClick={reset}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.55 }}
-              >
-                再起一卦
-              </motion.button>
             </motion.div>
           )}
         </AnimatePresence>
       </main>
 
       {/* 底部爻象进度 */}
-      {machineState !== 'HEXAGRAM_COMPLETE' && yaoResults.length > 0 && (
+      {!isHexagramComplete && yaoResults.length > 0 && (
         <footer className={styles.footer}>
           <YaoDisplay yaos={yaoResults} />
         </footer>
       )}
 
       {/* 进度指示 */}
-      {machineState !== 'PREPARE' && machineState !== 'HEXAGRAM_COMPLETE' && (
+      {machineState !== 'PREPARE' && !isHexagramComplete && (
         <div className={styles.progress}>
           <div
             className={styles.progressBar}

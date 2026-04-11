@@ -12,9 +12,9 @@ export default function HomeIntro({ onEnterGallery }: HomeIntroProps) {
         className={styles.card}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
+        transition={{ duration: 0.55, ease: 'easeOut' }}
       >
-        <div className={styles.title}>四 十 九 蓍</div>
+        <div className={styles.title}>四十九蓍</div>
         <div className={styles.subtitle}>占以明心，静以观象</div>
 
         <div className={styles.method}>
@@ -29,11 +29,11 @@ export default function HomeIntro({ onEnterGallery }: HomeIntroProps) {
 
         <div className={styles.actions}>
           <button className={styles.primary} onClick={onEnterGallery}>
-            观六十四卦
+            先观六十四卦
           </button>
         </div>
 
-        <div className={styles.hint}>在卦表页点击“开始占卜”继续</div>
+        <div className={styles.hint}>手机可左右查看卦表，底部按钮进入正式占卜</div>
       </motion.div>
     </div>
   );
