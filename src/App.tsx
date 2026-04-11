@@ -227,19 +227,6 @@ export default function App() {
         <Prompt text={prompt.text} subText={prompt.subText} />
       </header>
 
-      {animSpeedDock && (
-        <div
-          className={styles.animSpeedDock}
-          style={{
-            bottom: !isHexagramComplete && yaoResults.length > 0
-              ? 'calc(102px + env(safe-area-inset-bottom, 0px))'
-              : 'calc(44px + env(safe-area-inset-bottom, 0px))',
-          }}
-        >
-          <AnimSpeedPickers animSpeed={animSpeed} setAnimSpeed={setAnimSpeed} variant="dock" />
-        </div>
-      )}
-
       {/* 主区域 */}
       <main className={`${styles.main} ${isHexagramComplete ? styles.mainScrollable : ''}`}>
         <AnimatePresence mode="wait">
@@ -411,6 +398,20 @@ export default function App() {
             className={styles.progressBar}
             style={{ width: `${(changeNumber / 18) * 100}%` }}
           />
+        </div>
+      )}
+
+      {/* 必须在 main/footer 之后：否则同层 fixed 会被后绘制的 main 整块盖住 */}
+      {animSpeedDock && (
+        <div
+          className={styles.animSpeedDock}
+          style={{
+            bottom: !isHexagramComplete && yaoResults.length > 0
+              ? 'calc(102px + env(safe-area-inset-bottom, 0px))'
+              : 'calc(44px + env(safe-area-inset-bottom, 0px))',
+          }}
+        >
+          <AnimSpeedPickers animSpeed={animSpeed} setAnimSpeed={setAnimSpeed} variant="dock" />
         </div>
       )}
     </div>
