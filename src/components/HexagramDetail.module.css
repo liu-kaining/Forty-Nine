@@ -15,14 +15,16 @@
   border-radius: 16px;
   width: 100%;
   max-width: 500px;
-  max-height: 85vh;
-  overflow-y: auto;
+  max-height: min(85vh, calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   box-shadow: 0 12px 60px rgba(0, 0, 0, 0.12);
 }
 
 .header {
-  position: sticky;
-  top: 0;
+  position: relative;
+  flex-shrink: 0;
   background: #f5f0e6;
   border-bottom: 1px solid #d4c8b0;
   padding: 24px 30px;
@@ -79,7 +81,12 @@
 }
 
 .content {
-  padding: 24px 30px 40px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 30px calc(40px + env(safe-area-inset-bottom, 0px));
 }
 
 .section {

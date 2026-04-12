@@ -4,17 +4,18 @@
 }
 
 .mainText {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: clamp(18px, 2.4vw, 26px);
   letter-spacing: 0.24em;
   color: #4A3F30;
   line-height: 1.6;
 }
 
 .subText {
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  color: #a09080;
-  margin-top: 8px;
+  font-size: clamp(14px, 3.6vw, 17px);
+  letter-spacing: 0.1em;
+  color: #7a6e62;
+  margin-top: 10px;
+  line-height: 1.55;
 }
 
 /* 移动端适配 */
@@ -24,32 +25,32 @@
   }
 
   .mainText {
-    font-size: 16px;
-    letter-spacing: 0.16em;
-    line-height: 1.45;
+    font-size: clamp(17px, 4.2vw, 20px);
+    letter-spacing: 0.14em;
+    line-height: 1.5;
   }
 
   .subText {
-    font-size: 12px;
+    font-size: clamp(14px, 3.8vw, 16px);
     letter-spacing: 0.08em;
-    margin-top: 6px;
+    margin-top: 8px;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 10px 8px;
+    padding: 12px 8px;
   }
 
   .mainText {
-    font-size: 14px;
+    font-size: clamp(16px, 4.5vw, 19px);
     letter-spacing: 0.12em;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .subText {
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    margin-top: 4px;
+    font-size: clamp(13px, 3.9vw, 15px);
+    letter-spacing: 0.06em;
+    margin-top: 6px;
   }
 }

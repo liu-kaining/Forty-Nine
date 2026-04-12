@@ -186,8 +186,11 @@ export default function App() {
     [hexagramInfo, yaoResults]
   );
 
+  /** 揲蓍动画节奏：卦成结果页不再展示，避免挡按钮与卦象 */
   const showAnimSpeed =
-    machineState !== 'CONFIRMING' && machineState !== 'CONTEMPLATING';
+    machineState !== 'CONFIRMING' &&
+    machineState !== 'CONTEMPLATING' &&
+    !isHexagramComplete;
 
   /**
    * Portal：挂到 #forty-nine-portal（与 #root 平级），避免被 main 盖住。
@@ -401,9 +404,8 @@ export default function App() {
           <div
             className={styles.animSpeedPortalRoot}
             style={{
-              bottom: isHexagramComplete
-                ? 'calc(120px + env(safe-area-inset-bottom, 0px))'
-                : !isHexagramComplete && yaoResults.length > 0
+              bottom:
+                yaoResults.length > 0
                   ? 'calc(102px + env(safe-area-inset-bottom, 0px))'
                   : 'calc(48px + env(safe-area-inset-bottom, 0px))',
             }}
