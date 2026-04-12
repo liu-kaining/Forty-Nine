@@ -115,16 +115,16 @@ export default function HexagramDetail({ details, onClose }: HexagramDetailProps
           )}
 
           <section className={styles.section}>
-            <h3 className={styles.sectionTitle}>易象</h3>
+            <h3 className={styles.sectionTitle}>卦体说明</h3>
             <div className={styles.interpretation}>
               <p className={styles.interpText}>
-                本卦「{details.name}」，上为「{details.upperName}」，下为「{details.lowerName}」。
+                本卦「{details.name}」：上卦「{details.upperName}」，下卦「{details.lowerName}」。
                 {hasChangingYao && details.changedHexagram
-                  ? ` 有动爻，之卦为「${details.changedHexagram.name}」。宜以卦辞、爻辞为主，静心体察。`
-                  : ' 静卦无动爻，宜以卦辞与大象为主。'}
+                  ? ` 含动爻；之卦为「${details.changedHexagram.name}」。`
+                  : ' 无动爻（静卦）。'}
               </p>
               <p className={styles.interpSub}>
-                以上为象位提示，非占断结论；未调用外接大模型。
+                本应用仅供卦象与经文条目之查阅、陈列，不提供占断、推演或解卦。
               </p>
             </div>
           </section>
