@@ -1,6 +1,9 @@
-# Forty-Nine 架构说明（PlantUML）
+# Forty-Nine 架构说明
 
-本文用 PlantUML 描述整体结构、状态与关键交互。可在 IDE 中安装 PlantUML 插件预览，或使用 [PlantUML 在线服务](https://www.plantuml.com/plantuml/uml) 粘贴各段 `@startuml` … `@enduml` 渲染。
+本文提供 **PlantUML** 与 **Mermaid** 两套等价图示。
+
+- **PlantUML**：可在 IDE 安装插件预览，或粘贴到 [PlantUML 在线服务](https://www.plantuml.com/plantuml/uml)（`@startuml` … `@enduml`）。
+- **Mermaid**：GitHub、GitLab、多数文档站与 VS Code 预览原生支持 ```mermaid 代码块；亦可使用 [Mermaid Live Editor](https://mermaid.live)。
 
 ---
 
@@ -249,17 +252,189 @@ end note
 
 ---
 
+## Mermaid 版本（与上文 §1～8 对应）
+
+### M1. 系统边界
+
+```mermaid
+flowchart LR
+  U([使用者])
+  subgraph Browser[浏览器]
+    SPA["Forty-Nine（Vite + React SPA）"]
+    LS[("localStorage：divination_state / anim_speed")]
+  end
+  U -->|交互：分堆、确认等| SPA
+  SPA <-->|进度恢复、节奏偏好| LS
+```
+
+（无后端、无 WebSocket、无多用户房间——同 §1 文字说明。）
+
+### M2. 源码分层与依赖
+
+```mermaid
+flowchart TB
+  subgraph entry[入口]
+    main[main.tsx]
+  end
+  subgraph page[页面组装]
+    app[App.tsx]
+  end
+  subgraph comp[components]
+    direction TB
+    StalkBundle
+    SplitArea
+    YaoDisplay
+    Prompt
+    ConfirmDialog
+    ContemplationDialog
+    HexagramGallery
+    HexagramDetail
+    HomeIntro
+  end
+  subgraph hooks[hooks]
+    hook[useDivinationMachine]
+  end
+  subgraph engine[engine]
+    div[divination.ts]
+    hex[hexagrams.ts]
+  end
+  subgraph types_pkg[types]
+    types[types.ts]
+  end
+  main --> app
+  app --> hook
+  app --> div
+  app --> comp
+  hook --> types
+  hook --> div
+  div --> hex
+  div --> types
+  comp -.->|部分 props 结构| types
+```
+
+### M3. 应用内三屏流程
+
+```mermaid
+stateDiagram-v2
+  [*] --> HOME : 启动
+  HOME --> GALLERY : 进入六十四卦
+  GALLERY --> DIVINATION : 画廊结束 / 进入揲蓍
+  note right of DIVINATION
+    屏内挂载 useDivinationMachine；
+    成卦后 reset 只回到状态机 PREPARE，
+    不会自动把 screen 切回 HOME
+  end note
+```
+
+### M4. 占卜主状态机（`MachineState`）
+
+```mermaid
+stateDiagram-v2
+  classDef recovering fill:#fff9c4,stroke:#333
+  classDef animating fill:#e3f2fd,stroke:#333
+
+  [*] --> PREPARE : 无存档或卦成/准备态已清档
+  [*] --> RECOVERING : hydrate：localStorage 有进行中存档
+
+  PREPARE --> CONFIRMING : removeTaiChi
+  CONFIRMING --> CONTEMPLATING : confirmStart
+  CONFIRMING --> PREPARE : discardAndRestart（取消）
+
+  CONTEMPLATING --> AWAITING_SPLIT : startContemplation
+
+  RECOVERING --> AWAITING_SPLIT : resumeFromStorage
+  RECOVERING --> PREPARE : discardAndRestart
+
+  AWAITING_SPLIT --> ANIMATING : split(ratio)
+
+  ANIMATING --> AWAITING_SPLIT : 未满 6 爻（下一变或下一爻）
+  ANIMATING --> HEXAGRAM_COMPLETE : 第 6 爻完成
+
+  HEXAGRAM_COMPLETE --> PREPARE : reset()
+
+  class RECOVERING recovering
+  class ANIMATING animating
+```
+
+（`CHANGE_COMPLETE` 在类型中存在、当前未作为独立 `machineState` 使用——同 §4。）
+
+### M5. 揲蓍动画子阶段（`animationPhase`）
+
+```mermaid
+flowchart LR
+  SPLIT --> HANG_ONE --> COUNT_LEFT --> COUNT_RIGHT --> GATHER --> REGROUP --> PAUSE --> DONE([本变结束：advanceAnimation])
+```
+
+各阶段停留：`BASE_PHASE_TIMING × 节奏档`，由 `tickDelayMs` 与 `setTimeout` 链驱动。
+
+### M6. `DIVINATION` 屏主要组件与状态
+
+```mermaid
+flowchart TB
+  subgraph DIV["App（DIVINATION 主区）"]
+    Prompt
+    StalkBundle
+    SplitArea
+    YaoDisplay
+    HD[HexagramDetail]
+  end
+  H[useDivinationMachine]
+
+  SplitArea -->|onSplit → split| H
+  H -->|total / phase / changeResult …| StalkBundle
+  H -->|machineState → 文案| Prompt
+  H --> YaoDisplay
+  HD -.->|成卦后展示，数据由 App 从 state 派生| H
+```
+
+### M7. 时序：一次分堆到进入动画
+
+```mermaid
+sequenceDiagram
+  autonumber
+  actor U as 用户
+  participant SA as SplitArea
+  participant A as App
+  participant M as useDivinationMachine
+  participant E as performChange
+
+  U->>SA: pointer 交互得到 ratio
+  SA->>A: onSplit(ratio)
+  A->>M: split(ratio)
+  M->>E: performChange(total, ratio)
+  E-->>M: ChangeResult
+  M->>M: setState ANIMATING + SPLIT + currentChangeResult
+  A->>M: useEffect：ANIMATING+SPLIT → runAnimation()
+  loop 定时 tick
+    M->>M: advanceAnimation()
+  end
+```
+
+### M8. 六十四卦数据与查表
+
+```mermaid
+flowchart LR
+  div[divination.ts] -->|HEXAGRAM_TABLE 等| hex[hexagrams.ts]
+  div -.->|getHexagramInfo 组装详情| hex
+```
+
+（静态数据与查表，无运行时网络请求。）
+
+---
+
 ## 图的选择说明
 
-| 图 | 用途 |
-|----|------|
-| 1 系统边界 | 说明「纯前端 + localStorage」，避免误解有多用户后端 |
-| 2 分层依赖 | 新人快速定位 `App` / `hooks` / `engine` / 组件职责 |
-| 3 三屏 | `HOME` / `GALLERY` / `DIVINATION` 与路由式切换关系 |
-| 4 主状态机 | 产品流程与恢复、取消、成卦的核心契约 |
-| 5 动画子阶段 | 与 `types.AnimationPhase` 及 `advanceAnimation` 对齐 |
-| 6 组件与状态 | DIVINATION 主界面谁读谁写状态 |
-| 7 时序 | 一次 `split` 到 `runAnimation` 闭环 |
-| 8 引擎数据 | 卦象数据从哪里来 |
+| 图 | PlantUML | Mermaid |
+|----|----------|---------|
+| 1 系统边界 | §1 | M1 |
+| 2 分层依赖 | §2 | M2 |
+| 3 三屏 | §3 | M3 |
+| 4 主状态机 | §4 | M4 |
+| 5 动画子阶段 | §5 | M5 |
+| 6 组件与状态 | §6 | M6 |
+| 7 时序 | §7 | M7 |
+| 8 引擎数据 | §8 | M8 |
+
+各图用途与上表一致：系统边界、分层、三屏、主状态机、动画子阶段、组件数据流、分堆时序、引擎数据。
 
 若后续增加后端或账号体系，应增补 **部署图** 与 **鉴权 / 会话** 时序图；当前仓库不必画 C4 容器级多服务图。
